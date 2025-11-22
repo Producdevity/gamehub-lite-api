@@ -2,14 +2,14 @@
 
 Privacy-respecting static JSON API for the GameHub Android app. This repository hosts all the configuration files, component manifests, and mock responses that were previously served by Chinese servers.
 
-**GitHub Repository:** `https://github.com/gamehublite/gamehub_api`
-**Raw URL Base:** `https://raw.githubusercontent.com/gamehublite/gamehub_api/main/`
+**GitHub Repository:** `https://github.com/Producdevity/gamehub-lite-api`
+**Raw URL Base:** `https://raw.githubusercontent.com/Producdevity/gamehub-lite-api/master/`
 
 ---
 
 ## What This Repository Contains
 
-This is a **static file repository** that stores JSON configuration files and data manifests. It works together with the [Cloudflare Worker](https://github.com/gamehublite/gamehub-api) to provide a complete privacy-respecting API infrastructure.
+This is a **static file repository** that stores JSON configuration files and data manifests. It works together with the [Cloudflare Worker](https://github.com/Producdevity/gamehub-lite-worker) to provide a complete privacy-respecting API infrastructure.
 
 All files in this repository are served via GitHub's raw content API and consumed by the Cloudflare Worker proxy.
 
@@ -58,11 +58,13 @@ The most important files in this repository are the **component manifests**. The
 ### Component Types
 
 #### 1. Box64 Manifest (`components/box64_manifest`)
+
 **Type:** 1
 **Purpose:** Box64 and FEX emulator builds for x86_64 game emulation on ARM64 devices
 **Total Items:** 13
 
 Contains versions like:
+
 - Box64-0.38 (4.1 MB)
 - Box64-0.37-b2 (4.3 MB)
 - Box64-0.37-b1 (4.2 MB)
@@ -72,30 +74,37 @@ Contains versions like:
 - And older versions...
 
 #### 2. Drivers Manifest (`components/drivers_manifest`)
+
 **Type:** 2
 **Purpose:** GPU-specific drivers and Mesa builds
 **Categories:**
+
 - Mali drivers (Panfrost, Bifrost)
 - Adreno drivers (Freedreno, Turnip)
 - PowerVR drivers
 
 #### 3. DXVK Manifest (`components/dxvk_manifest`)
+
 **Type:** 3
 **Purpose:** DirectX 9/10/11 to Vulkan translation layers
 
 #### 4. VKD3D Manifest (`components/vkd3d_manifest`)
+
 **Type:** 4
 **Purpose:** Direct3D 12 to Vulkan translation layers
 
 #### 5. Games Manifest (`components/games_manifest`)
+
 **Type:** 5
 **Purpose:** Pre-configured Wine prefixes and game-specific configurations
 
 #### 6. Libraries Manifest (`components/libraries_manifest`)
+
 **Type:** 6
 **Purpose:** Windows DLLs and libraries for Wine compatibility
 
 #### 7. Steam Manifest (`components/steam_manifest`)
+
 **Type:** 7
 **Purpose:** Steam client integration files
 
@@ -136,6 +145,7 @@ All component manifests follow this JSON structure:
 ```
 
 **Key Fields:**
+
 - `id` - Unique component identifier
 - `name` - Component name
 - `download_url` - Direct CDN link (downloads bypass the worker)
@@ -221,7 +231,7 @@ Empty DNS pool (allows direct Steam connections):
 **Request Flow Example:**
 
 1. App requests: `POST /simulator/v2/getComponentList` (type=1, page=1)
-2. Worker fetches: `https://raw.githubusercontent.com/gamehublite/gamehub_api/main/components/box64_manifest`
+2. Worker fetches: `https://raw.githubusercontent.com/Producdevity/gamehub-lite-api/master/components/box64_manifest`
 3. GitHub returns: Full manifest JSON
 4. Worker transforms: Paginates and renames "components" → "list"
 5. App receives: Page 1 of Box64 components
@@ -234,16 +244,18 @@ Empty DNS pool (allows direct Steam connections):
 ### Adding New Components
 
 1. Edit the appropriate manifest file:
+
    ```bash
    vim components/box64_manifest
    ```
 
 2. Add new component entry to the `components` array:
+
    ```json
    {
      "id": 346,
      "name": "Box64-0.39-b1",
-     "download_url": "https://github.com/gamehublite/gamehub_api/releases/download/Components/Box64-0.39-b1.tzst",
+     "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Box64-0.39-b1.tzst",
      "file_md5": "abc123...",
      "file_size": "4300000",
      "file_name": "Box64-0.39-b1.tzst",
@@ -251,13 +263,14 @@ Empty DNS pool (allows direct Steam connections):
      "version": "1.0.0",
      "version_code": 1,
      "is_ui": 1,
-     "logo": "https://github.com/gamehublite/gamehub_api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png"
+     "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png"
    }
    ```
 
 3. Update the `total` count in `data` object
 
 4. Update all API endpoint files that reference this component type:
+
    - `components/downloads` - Add to downloads array, update total
    - `simulator/v2/getAllComponentList` - Add to list array, update total
    - `simulator/v2/getComponentList` - Add to list array, update total
@@ -265,19 +278,21 @@ Empty DNS pool (allows direct Steam connections):
    - `simulator/executeScript/generic` - Add to components array (if Fex/Box64)
 
 5. Upload the component file (.tzst) to GitHub releases:
+
    ```bash
-   # Go to: https://github.com/gamehublite/gamehub_api/releases/tag/Components
+   # Go to: https://github.com/Producdevity/gamehub-lite-api/releases/tag/Components
    # Upload the .tzst file via the web interface
    ```
 
 6. Commit and push:
+
    ```bash
    git add .
-   git commit -m "Add Box64 0.38-b1"
+   git commit -m "feat: add Box64 0.38-b1"
    git push origin main
    ```
 
-5. Changes propagate:
+7. Changes propagate:
    - GitHub: < 10 seconds
    - Cloudflare Worker cache: 5 minutes
    - App receives: Next request after cache expiry
@@ -291,11 +306,13 @@ Edit files in `base/`, `game/`, `cloud/`, etc. and push changes. Same propagatio
 ## File Formats
 
 **JSON Files:**
+
 - All manifests and configs
 - Standard JSON with pretty printing
 - Use UTF-8 encoding
 
 **Plain Text:**
+
 - `game/getSteamHost/index` (hosts file format)
 - Line-separated, no JSON wrapper
 
@@ -324,11 +341,13 @@ Edit files in `base/`, `game/`, `cloud/`, etc. and push changes. Same propagatio
 ## CDN Downloads
 
 All component downloads are hosted on external CDN:
+
 ```
 https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/pc_zst/...
 ```
 
 **Important:**
+
 - This repository only provides download URLs
 - Actual file downloads are direct from CDN
 - Worker and GitHub never see download traffic
@@ -350,6 +369,7 @@ All API responses follow this structure:
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `500` - Error (rare, only for malformed files)
 
@@ -367,18 +387,21 @@ All API responses follow this structure:
 ## Usage
 
 **Direct Access (Not Recommended):**
+
 ```bash
 curl https://raw.githubusercontent.com/gamehublite/gamehub_api/main/components/box64_manifest
 ```
 
 **Via Cloudflare Worker (Recommended):**
+
 ```bash
-curl -X POST https://gamehub-api.secureflex.workers.dev/simulator/v2/getComponentList \
+curl -X POST https://gamehub-lite-api.emuready.workers.dev/simulator/v2/getComponentList \
   -H "Content-Type: application/json" \
   -d '{"type": 1, "page": 1, "page_size": 10}'
 ```
 
 The worker adds:
+
 - Pagination
 - CORS headers
 - Caching
@@ -389,7 +412,7 @@ The worker adds:
 
 ## Related Repositories
 
-- **Cloudflare Worker:** [gamehub-api](https://github.com/gamehublite/gamehub-api) - API proxy and router
+- **Cloudflare Worker:** [gamehub-api](https://github.com/Producdevity/gamehub-lite-worker) - API proxy and router
 - **APK Modifications:** See main GameHub analysis documentation
 
 ---
@@ -407,6 +430,7 @@ The worker adds:
 ## Changelog
 
 ### 2025-10-07
+
 - Initial repository setup
 - Added all component manifests
 - Added configuration files
@@ -414,4 +438,4 @@ The worker adds:
 
 ---
 
-**For questions about the Cloudflare Worker integration, see the [gamehub-api repository](https://github.com/gamehublite/gamehub-api).**
+**For questions about the Cloudflare Worker integration, see the [gamehub-lite-worker repository](https://github.com/Producdevity/gamehub-lite-worker).**
