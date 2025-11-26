@@ -351,7 +351,7 @@ https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/pc_zst/...
 - This repository only provides download URLs
 - Actual file downloads are direct from CDN
 - Worker and GitHub never see download traffic
-- Your IP is not logged by this infrastructure
+- Your IP is not logged by us using this infrastructure
 
 ---
 
@@ -410,10 +410,15 @@ The worker adds:
 
 ---
 
-## Related Repositories
+## Related Projects
 
-- **Cloudflare Worker:** [gamehub-api](https://github.com/Producdevity/gamehub-lite-worker) - API proxy and router
-- **APK Modifications:** See main GameHub analysis documentation
+| Repository                                                                               | Description                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [gamehub-lite](https://github.com/Producdevity/gamehub-lite)                             | Main project with pre-built APK releases                                                                                                                         |
+| [gamehub-lite-api](https://github.com/Producdevity/gamehub-lite-api)                     | Static JSON API hosting component manifests, configuration files, and mock responses that replace the original Chinese servers                                   |
+| [gamehub-lite-worker](https://github.com/Producdevity/gamehub-lite-worker)               | Cloudflare Worker API proxy that handles token management, signature regeneration, privacy protection (IP hiding, fingerprint sanitization), and content routing |
+| [gamehub-lite-news](https://github.com/Producdevity/gamehub-lite-news)                   | News aggregator that collects gaming news from RSS feeds and GitHub releases, transforms them into GameHub's API format                                          |
+| [gamehub-lite-token-refresh](https://github.com/Producdevity/gamehub-lite-token-refresh) | Automated token refresher that uses Mail.tm OTP authentication to maintain valid GameHub tokens, runs every 4 hours via Cloudflare Cron                          |
 
 ---
 
