@@ -4,12 +4,12 @@
   "data": {
     "imagefs": {
       "id": 1,
-      "version": "1.3.1",
-      "version_code": 21,
+      "version": "1.3.2",
+      "version_code": 22,
       "name": "Firmware",
       "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/imagefs.zst",
-      "file_md5": "8ad01c5451bf3e7be1e07ffe5657c9ec",
-      "file_size": "168536389",
+      "file_md5": "b72f654d38ff4218f035df1ad462cdd8",
+      "file_size": "168946843",
       "file_name": "imagefs.zst",
       "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
       "display_name": "Firmware"
