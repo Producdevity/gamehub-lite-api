@@ -389,7 +389,7 @@ All API responses follow this structure:
 **Direct Access (Not Recommended):**
 
 ```bash
-curl https://raw.githubusercontent.com/gamehublite/gamehub_api/main/components/box64_manifest
+curl https://raw.githubusercontent.com/Producdevity/gamehub-lite-api/master/components/box64_manifest
 ```
 
 **Via Cloudflare Worker (Recommended):**
