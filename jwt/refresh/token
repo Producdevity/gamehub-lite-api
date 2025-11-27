@@ -1,0 +1,8 @@
+{
+  "code": 200,
+  "msg": "",
+  "time": "1732752000",
+  "data": {
+    "token": "fake-token"
+  }
+}
