@@ -2,5 +2,8 @@
   "code": 200,
   "msg": "",
   "time": "1732752000",
-  "data": null
+  "data": {
+    "code": 0,
+    "msg": ""
+  }
 }
