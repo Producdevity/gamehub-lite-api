@@ -1220,6 +1220,15 @@
         "file_md5": "f355b90beebafc1b2f251a0d4c2d27aa"
       },
       {
+        "name": "SILENT HILL F",
+        "type": 5,
+        "version": "1.0.0",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/1a0b587288325ca4a29949af0222b745.tzst",
+        "file_name": "SILENT HILL F.tzst",
+        "file_size": "60445",
+        "file_md5": "1a0b587288325ca4a29949af0222b745"
+      },
+      {
         "name": "Fex_20250728",
         "type": 1,
         "version": "1.0.0",
