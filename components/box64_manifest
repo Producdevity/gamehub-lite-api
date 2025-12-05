@@ -5,15 +5,15 @@
     "type": 1,
     "type_name": "box64",
     "display_name": "Box64 Emulators",
-    "total": 13,
+    "total": 14,
     "components": [
       {
         "display_name": "Box64-0.39",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/30a7c5210e11f084430195a3a679e1e5.tzst",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Box64-0.39.tzst",
         "file_md5": "30a7c5210e11f084430195a3a679e1e5",
         "file_name": "Box64-0.39.tzst",
         "file_size": "4321814",
-        "id": 345,
+        "id": 348,
         "is_ui": 1,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
         "name": "Box64-0.39",
