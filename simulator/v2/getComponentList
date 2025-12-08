@@ -79,6 +79,21 @@
         "gpu_range": ""
       },
       {
+        "id": 349,
+        "version": "1.0.0",
+        "version_code": 1,
+        "type": 1,
+        "name": "Fex-20251205",
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "blurb": "",
+        "file_md5": "67778a1a35c83ae3d3621c549bb3a008",
+        "file_size": "4251479",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251205.tzst",
+        "file_name": "fex-20251205.tzst",
+        "display_name": "Fex-20251205",
+        "gpu_range": ""
+      },
+      {
         "id": 345,
         "version": "1.0.0",
         "version_code": 1,
