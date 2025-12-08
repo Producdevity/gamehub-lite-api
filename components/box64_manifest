@@ -5,7 +5,7 @@
     "type": 1,
     "type_name": "box64",
     "display_name": "Box64 Emulators",
-    "total": 14,
+    "total": 15,
     "components": [
       {
         "display_name": "Box64-0.39",
