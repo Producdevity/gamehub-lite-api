@@ -2,7 +2,7 @@
   "code": 200,
   "msg": "Success",
   "data": {
-    "total": 265,
+    "total": 266,
     "downloads": [
       {
         "name": "mono",
@@ -1281,6 +1281,15 @@
         "file_name": "Fex_20241214.tzst",
         "file_size": "2347087",
         "file_md5": "c48e8cc6acb10ab8d969e5947bc78bce"
+      },
+      {
+        "name": "Fex_20251128",
+        "type": 1,
+        "version": "1.0.0",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251128.tzst",
+        "file_name": "fex-20251128.tzst",
+        "file_size": "15248636",
+        "file_md5": "f0f0c4b2ead7a4295638db86a4640b9a"
       },
       {
         "name": "Fex_20251205",

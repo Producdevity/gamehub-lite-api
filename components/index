@@ -2,7 +2,7 @@
   "code": 200,
   "msg": "Success",
   "data": {
-    "total_components": 267,
+    "total_components": 268,
     "categories": [
       {
         "type": 1,
