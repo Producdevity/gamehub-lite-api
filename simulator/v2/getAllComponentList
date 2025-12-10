@@ -1726,6 +1726,34 @@
         "version_code": 1
       },
       {
+        "display_name": "Fex-20251205",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251205.tzst",
+        "file_md5": "67778a1a35c83ae3d3621c549bb3a008",
+        "file_name": "fex-20251205.tzst",
+        "file_size": "4251479",
+        "id": 349,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex-20251205",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "Fex-20251128",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251128.tzst",
+        "file_md5": "f0f0c4b2ead7a4295638db86a4640b9a",
+        "file_name": "fex-20251128.tzst",
+        "file_size": "15248636",
+        "id": 350,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex-20251128",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20250910.tzst",
         "file_md5": "37a75036118dc0f14ad2ae1b6e1561fc",
@@ -3714,7 +3742,7 @@
         "version_code": 1
       }
     ],
-    "total": 265
+    "total": 266
   },
   "time": "1759448660"
 }
