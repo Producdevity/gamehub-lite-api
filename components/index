@@ -2,57 +2,57 @@
   "code": 200,
   "msg": "Success",
   "data": {
-    "total_components": 266,
     "categories": [
       {
-        "type": 1,
-        "name": "box64",
+        "count": 17,
         "display_name": "Box64 Emulators",
-        "count": 14,
-        "manifest_url": "/components/box64_manifest"
+        "manifest_url": "/components/box64_manifest",
+        "name": "box64",
+        "type": 1
       },
       {
-        "type": 2,
-        "name": "drivers",
+        "count": 74,
         "display_name": "GPU Drivers",
-        "count": 67,
-        "manifest_url": "/components/drivers_manifest"
+        "manifest_url": "/components/drivers_manifest",
+        "name": "drivers",
+        "type": 2
       },
       {
-        "type": 3,
-        "name": "dxvk",
-        "display_name": "DXVK Layers",
         "count": 29,
-        "manifest_url": "/components/dxvk_manifest"
+        "display_name": "DXVK Layers",
+        "manifest_url": "/components/dxvk_manifest",
+        "name": "dxvk",
+        "type": 3
       },
       {
-        "type": 4,
-        "name": "vkd3d",
+        "count": 4,
         "display_name": "VKD3D Proton",
-        "count": 3,
-        "manifest_url": "/components/vkd3d_manifest"
+        "manifest_url": "/components/vkd3d_manifest",
+        "name": "vkd3d",
+        "type": 4
       },
       {
-        "type": 5,
-        "name": "games",
+        "count": 51,
         "display_name": "Game Patches",
-        "count": 39,
-        "manifest_url": "/components/games_manifest"
+        "manifest_url": "/components/games_manifest",
+        "name": "games",
+        "type": 5
       },
       {
-        "type": 6,
-        "name": "libraries",
+        "count": 113,
         "display_name": "System Libraries",
-        "count": 112,
-        "manifest_url": "/components/libraries_manifest"
+        "manifest_url": "/components/libraries_manifest",
+        "name": "libraries",
+        "type": 6
       },
       {
-        "type": 7,
-        "name": "steam",
-        "display_name": "Steam Components",
         "count": 2,
-        "manifest_url": "/components/steam_manifest"
+        "display_name": "Steam Components",
+        "manifest_url": "/components/steam_manifest",
+        "name": "steam",
+        "type": 7
       }
-    ]
+    ],
+    "total_components": 290
   }
 }

@@ -9,20 +9,6 @@
     "components": [
       {
         "display_name": "",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/steam_9866232.tar.zst",
-        "file_md5": "3d9d01362622a782a27ae691427b786c",
-        "file_name": "steam_9866232.tar.zst",
-        "file_size": "41192642",
-        "id": 316,
-        "is_ui": 1,
-        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
-        "name": "steam_9866232",
-        "type": 7,
-        "version": "1.0.0",
-        "version_code": 1
-      },
-      {
-        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/steam_9866233.tar.zst",
         "file_md5": "250a0996b2949022c44f274baa525411",
         "file_name": "steam_9866233.tar.zst",
@@ -31,6 +17,20 @@
         "is_ui": 1,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
         "name": "steam_9866233",
+        "type": 7,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "steam_9866232",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/steam_9866232.tar.zst",
+        "file_md5": "3d9d01362622a782a27ae691427b786c",
+        "file_name": "steam_9866232.tar.zst",
+        "file_size": "41192642",
+        "id": 316,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "steam_9866232",
         "type": 7,
         "version": "1.0.0",
         "version_code": 1
