@@ -1,0 +1,54 @@
+{
+  "translations": {
+    "box64": {
+      "AlignedAtomics": "0",
+      "BigBlock": "2",
+      "Box64AVX": "0",
+      "CallRet": "0",
+      "CpuType": "0",
+      "DF": "1",
+      "DIV0": "0",
+      "Dirty": "0",
+      "Dynarec": "1",
+      "FastNan": "1",
+      "FastRound": "1",
+      "IgnoreINT3": "0",
+      "NativeFlags": "1",
+      "Pause": "0",
+      "RDTSC1GHZ": "0",
+      "SafeFlags": "0",
+      "StrongMem": "0",
+      "VolatileMetadataBox64": "1",
+      "Wait": "1",
+      "WeakBarrier": "0",
+      "X87Double": "0"
+    },
+    "fex": {
+      "HalfBarrierTSOEnabled": "1",
+      "HideHypervisorBit": "0",
+      "MaxInst": "5000",
+      "MemcpySetTSOEnabled": "0",
+      "MonoHacks": "1",
+      "Multiblock": "0",
+      "SMCChecks": "mtrack",
+      "SmallTSCScale": "1",
+      "TSOEnabled": "1",
+      "VectorTSOEnabled": "0",
+      "VolatileMetadata": "1",
+      "X87ReducedPrecision": "1"
+    }
+  },
+  "controller": {
+    "dinput": false,
+    "xinput": true,
+    "xboxLayout": false,
+    "vibration": true
+  },
+  "audio_driver": 1,
+  "cpu_limitations": 0,
+  "video_memory": 0,
+  "directx_panel": 0,
+  "launch_windowed_mode": 0,
+  "start_param": "",
+  "environment": ""
+}
