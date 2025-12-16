@@ -10,12 +10,24 @@ import type {
 import { COMPONENT_TYPE_META } from '../types/index.js';
 
 /**
+ * Info about a component's original CDN URL (for downloading missing files)
+ */
+export interface OriginalComponentInfo {
+  id: number;
+  name: string;
+  originalFileName: string; // Original file_name from XML (may have spaces)
+  githubFileName: string; // GitHub-compatible file_name (spaces replaced with dots)
+  originalDownloadUrl: string; // Original CDN URL from XML
+}
+
+/**
  * Central registry holding all data
  */
 export class ComponentRegistry {
   private components: Map<number, Component> = new Map();
   private componentsByType: Map<ComponentTypeValue, Component[]> = new Map();
   private componentsByName: Map<string, Component> = new Map();
+  private originalComponentInfo: Map<number, OriginalComponentInfo> = new Map();
 
   public containers: Container[] = [];
   public imagefs: Imagefs | null = null;
@@ -30,6 +42,14 @@ export class ComponentRegistry {
     for (let type = 1; type <= 7; type++) {
       this.componentsByType.set(type as ComponentTypeValue, []);
     }
+  }
+
+  /**
+   * Convert file name to GitHub-compatible format (spaces -> dots)
+   * GitHub release assets replace spaces with dots automatically
+   */
+  private toGitHubFileName(fileName: string): string {
+    return fileName.replace(/ /g, '.');
   }
 
   /**
@@ -54,10 +74,23 @@ export class ComponentRegistry {
       return;
     }
 
-    // Rewrite download URL to GitHub CDN
+    // Store original info for missing file detection
+    const originalFileName = component.file_name;
+    const githubFileName = this.toGitHubFileName(originalFileName);
+
+    this.originalComponentInfo.set(component.id, {
+      id: component.id,
+      name: component.name,
+      originalFileName,
+      githubFileName,
+      originalDownloadUrl: component.download_url,
+    });
+
+    // Rewrite download URL to GitHub CDN with a GitHub-compatible filename
     const rewrittenComponent: Component = {
       ...component,
-      download_url: `${this.config.cdnBaseUrl}/${component.file_name}`,
+      file_name: githubFileName,
+      download_url: `${this.config.cdnBaseUrl}/${githubFileName}`,
       logo: this.config.logoUrl,
     };
 
@@ -152,6 +185,13 @@ export class ComponentRegistry {
    */
   getTypeMeta(type: ComponentTypeValue) {
     return COMPONENT_TYPE_META[type];
+  }
+
+  /**
+   * Get all original component info (for missing file detection)
+   */
+  getAllOriginalInfo(): OriginalComponentInfo[] {
+    return Array.from(this.originalComponentInfo.values());
   }
 
   /**

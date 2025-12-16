@@ -1,9 +1,10 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
+import { execSync } from 'child_process';
 
 import { parseXmlFile } from './parsers/xml-parser.js';
 import { parseCustomComponents } from './parsers/custom-parser.js';
-import { ComponentRegistry } from './registry/registry.js';
+import { ComponentRegistry, OriginalComponentInfo } from './registry/registry.js';
 import {
   generateAllManifests,
   generateIndex,
@@ -25,6 +26,47 @@ import { DEFAULT_CONFIG } from './types/index.js';
 function loadJson<T>(path: string): T {
   const content = readFileSync(path, 'utf-8');
   return JSON.parse(content) as T;
+}
+
+/**
+ * Get the list of assets in a GitHub release
+ */
+function getGitHubReleaseAssets(repo: string, release: string): Set<string> {
+  try {
+    const output = execSync(
+      `gh release view "${release}" --repo "${repo}" --json assets --jq '.assets[].name'`,
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+    );
+    return new Set(output.trim().split('\n').filter(Boolean));
+  } catch {
+    console.warn('   Warning: Could not fetch GitHub release assets (gh CLI not available or not authenticated)');
+    return new Set();
+  }
+}
+
+/**
+ * Check for missing files on GitHub and report them
+ */
+function checkMissingFiles(
+  registry: ComponentRegistry,
+  config: BuildConfig
+): { missing: OriginalComponentInfo[]; total: number } {
+  const githubAssets = getGitHubReleaseAssets(config.githubRepo, config.githubRelease);
+
+  if (githubAssets.size === 0) {
+    return { missing: [], total: 0 };
+  }
+
+  const allInfo = registry.getAllOriginalInfo();
+  const missing: OriginalComponentInfo[] = [];
+
+  for (const info of allInfo) {
+    if (!githubAssets.has(info.githubFileName)) {
+      missing.push(info);
+    }
+  }
+
+  return { missing, total: allInfo.length };
 }
 
 /**
@@ -169,6 +211,39 @@ async function build(config: BuildConfig): Promise<void> {
   console.log(`  - Type 6 (Libraries): ${counts[6]}`);
   console.log(`  - Type 7 (Steam): ${counts[7]}`);
   console.log(`  Containers: ${registry.containers.length}`);
+
+  // Check for missing files on GitHub
+  console.log('\n7. Checking GitHub release for missing files...');
+  const { missing, total } = checkMissingFiles(registry, config);
+
+  if (total === 0) {
+    console.log('   Skipped (could not fetch GitHub assets)\n');
+  } else if (missing.length === 0) {
+    console.log(`   ✓ All ${total} component files exist on GitHub release\n`);
+  } else {
+    console.log(`\n   ⚠ MISSING FILES: ${missing.length} of ${total} files not found on GitHub!\n`);
+    console.log('   These files must be uploaded to GitHub release before deployment.\n');
+    console.log('   Download commands:');
+    console.log('   ```bash');
+    console.log('   mkdir -p /tmp/missing_components && cd /tmp/missing_components\n');
+
+    for (const info of missing) {
+      const encodedUrl = info.originalDownloadUrl.replace(/ /g, '%20');
+      console.log(`   # ${info.name} (ID: ${info.id})`);
+      console.log(`   curl -L -o "${info.githubFileName}" "${encodedUrl}"\n`);
+    }
+
+    console.log('   ```\n');
+    console.log('   Upload command:');
+    console.log('   ```bash');
+    const fileList = missing.map((m) => `"${m.githubFileName}"`).join(' ');
+    console.log(`   gh release upload ${config.githubRelease} ${fileList} --repo ${config.githubRepo}`);
+    console.log('   ```\n');
+
+    // Exit with error to prevent deployment with missing files
+    console.error('   ❌ Build failed: Missing files must be uploaded before deployment');
+    process.exit(1);
+  }
 }
 
 /**
