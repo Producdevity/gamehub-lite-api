@@ -1,0 +1,18 @@
+{
+  "dxvk": 24,
+  "vkd3d": 7,
+  "steamClient": 334,
+  "container": 2,
+  "genericComponentIds": [7, 8, 24, 345],
+  "qualcommComponentIds": [7, 8, 25, 345, 48],
+  "genericContext": {
+    "params": ["ARM", 78, "Mali-G78", 0, "0", 2],
+    "script_id": 9,
+    "timestamp": 1759470524
+  },
+  "qualcommContext": {
+    "params": ["Qualcomm", 750, "Adreno (TM) 750", 2150604839, "6850", 2],
+    "script_id": 9,
+    "timestamp": 1759470524
+  }
+}

@@ -5,10 +5,10 @@
     "type": 5,
     "type_name": "games",
     "display_name": "Game Patches",
-    "total": 50,
+    "total": 51,
     "components": [
       {
-        "display_name": "sifu_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/sifu_Settings.tzst",
         "file_md5": "81d93f983ce0e2ad65e0ea0b76268e26",
         "file_name": "sifu_Settings.tzst",
@@ -22,7 +22,7 @@
         "version_code": 1
       },
       {
-        "display_name": "TinasWonderlands_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/TinasWonderlands_Settings.tzst",
         "file_md5": "0085e7cae61107dcc51b5c3457fc6692",
         "file_name": "TinasWonderlands_Settings.tzst",
@@ -36,7 +36,21 @@
         "version_code": 1
       },
       {
-        "display_name": "mod.io_Settings",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Massive_Settings.tzst",
+        "file_md5": "fa20b2979210b8f2e37c3900095260b1",
+        "file_name": "Massive_Settings.tzst",
+        "file_size": "261610",
+        "id": 370,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Massive_Settings",
+        "type": 5,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mod.io_Settings.tzst",
         "file_md5": "3e20de8eb12a74bcbb41a815b84859a3",
         "file_name": "mod.io_Settings.tzst",
@@ -50,7 +64,7 @@
         "version_code": 1
       },
       {
-        "display_name": "TheHinokamiChronicles2_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/TheHinokamiChronicles2_Settings.tzst",
         "file_md5": "46655c21cc8911f9c54f7a1aed926cab",
         "file_name": "TheHinokamiChronicles2_Settings.tzst",
@@ -64,7 +78,7 @@
         "version_code": 1
       },
       {
-        "display_name": "MetroExodus_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/MetroExodus_Settings.tzst",
         "file_md5": "b1cd740e61ca79e7743755a37221b354",
         "file_name": "MetroExodus_Settings.tzst",
@@ -78,7 +92,7 @@
         "version_code": 1
       },
       {
-        "display_name": "DyingLight_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dyinglight_Settings.tzst",
         "file_md5": "c1ef2ce110c16e540b772e96678f5311",
         "file_name": "dyinglight_Settings.tzst",
@@ -92,10 +106,10 @@
         "version_code": 1
       },
       {
-        "display_name": "A Plague_Settings",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/A_Plague_Settings.tzst",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/A.Plague_Settings.tzst",
         "file_md5": "d29609bed803165de777bafa8cff629d",
-        "file_name": "A_Plague_Settings.tzst",
+        "file_name": "A.Plague_Settings.tzst",
         "file_size": "845",
         "id": 361,
         "is_ui": 1,
@@ -106,7 +120,7 @@
         "version_code": 1
       },
       {
-        "display_name": "MountandBlade2_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/MountandBlade2_Settings.tzst",
         "file_md5": "56fc3c89329fc14a09b09b98cf005383",
         "file_name": "MountandBlade2_Settings.tzst",
@@ -120,10 +134,10 @@
         "version_code": 1
       },
       {
-        "display_name": "FINAL FANTASY 7_Settings",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/FINAL_FANTASY_7_Settings.tzst",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/FINAL.FANTASY.7_Settings.tzst",
         "file_md5": "724ee89efc09e42c40d15488ee50ad61",
-        "file_name": "FINAL_FANTASY_7_Settings.tzst",
+        "file_name": "FINAL.FANTASY.7_Settings.tzst",
         "file_size": "1018",
         "id": 359,
         "is_ui": 1,
@@ -134,7 +148,7 @@
         "version_code": 1
       },
       {
-        "display_name": "GrimDawnController_Settings",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/GrimDawnController_Settings.tzst",
         "file_md5": "3ea6e9806cc1b7ce249434cee78d3490",
         "file_name": "GrimDawnController_Settings.tzst",
@@ -148,10 +162,10 @@
         "version_code": 1
       },
       {
-        "display_name": "SILENT HILL F",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SILENT_HILL_F.tzst",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SILENT.HILL.F.tzst",
         "file_md5": "1a0b587288325ca4a29949af0222b745",
-        "file_name": "SILENT_HILL_F.tzst",
+        "file_name": "SILENT.HILL.F.tzst",
         "file_size": "60445",
         "id": 340,
         "is_ui": 1,
@@ -162,7 +176,7 @@
         "version_code": 1
       },
       {
-        "display_name": "Absolum",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Absolum.tzst",
         "file_md5": "a53518feaa1213130be8cf045537ceb6",
         "file_name": "Absolum.tzst",
@@ -178,16 +192,16 @@
       {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/steamagent.tar.zst",
-        "file_md5": "08948711f330b5cd705c836b458127d5",
+        "file_md5": "5a27f72e5e93f9b73b4c0d37bd5916cc",
         "file_name": "steamagent.tar.zst",
-        "file_size": "1907395",
+        "file_size": "1947595",
         "id": 321,
-        "is_ui": 2,
+        "is_ui": 1,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
         "name": "steamagent",
         "type": 5,
-        "version": "1.0.4",
-        "version_code": 5
+        "version": "1.0.8",
+        "version_code": 9
       },
       {
         "display_name": "",
@@ -227,20 +241,6 @@
         "is_ui": 1,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
         "name": "ItTakesTwo",
-        "type": 5,
-        "version": "1.0.0",
-        "version_code": 1
-      },
-      {
-        "display_name": "",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Massive_Settings.tzst",
-        "file_md5": "fa20b2979210b8f2e37c3900095260b1",
-        "file_name": "Massive_Settings.tzst",
-        "file_size": "261610",
-        "id": 370,
-        "is_ui": 1,
-        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
-        "name": "Massive_Settings",
         "type": 5,
         "version": "1.0.0",
         "version_code": 1
@@ -532,7 +532,7 @@
         "file_name": "Wine.tzst",
         "file_size": "69486",
         "id": 217,
-        "is_ui": 2,
+        "is_ui": 1,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
         "name": "Wine",
         "type": 5,

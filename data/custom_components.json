@@ -1,0 +1,17 @@
+{
+  "$schema": "./custom_components.schema.json",
+  "version": "1.0.0",
+  "description": "Custom components not in official GameHub XML. Add your own components here.",
+  "components": [
+    {
+      "id": 316,
+      "name": "steam_9866232",
+      "type": 7,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "steam_9866232.tar.zst",
+      "file_md5": "3d9d01362622a782a27ae691427b786c",
+      "file_size": "41192642"
+    }
+  ]
+}

@@ -1,283 +1,249 @@
-# Adding New Components to GameHub Static API
+# Adding New Components to GameHub Lite API
 
-This guide explains how to add new components (drivers, libraries, etc.) to the GameHub static API hosted on GitHub.
+This guide explains how to add new components (drivers, libraries, etc.) to the GameHub Lite API.
 
 ## Overview
 
-The GameHub app uses a static API hosted on GitHub to serve component information. When new components are released, they need to be added to multiple JSON files to ensure they work properly in the app.
+The GameHub Lite API uses a TypeScript build system that automatically generates all API endpoint files from:
+- `data/sp_winemu_all_components12.xml` - Official GameHub component data
+- `data/custom_components.json` - Custom components not in the XML
 
-## Prerequisites
+**You no longer need to manually edit multiple JSON files.** The build system handles all file generation and validation.
 
-- HAR file from HTTP Toolkit capturing GameHub API traffic
-- Access to `/Users/ghlite/Downloads/gamehub_api/` repository
-- `jq` command-line tool for JSON processing
+## Component Types
 
-## Step 1: Extract New Components from HAR File
+| Type | Name | Description |
+|------|------|-------------|
+| 1 | Box64/FEX | x86_64 emulators for ARM64 |
+| 2 | GPU Drivers | Turnip, Adreno, Mali drivers |
+| 3 | DXVK | DirectX 9/10/11 to Vulkan |
+| 4 | VKD3D | Direct3D 12 to Vulkan |
+| 5 | Games | Game-specific patches/configs |
+| 6 | Libraries | Windows DLLs for Wine |
+| 7 | Steam | Steam client components |
 
-### Find the HAR File
-HAR files are typically stored in:
-```
-/Users/ghlite/Desktop/dec/HAR/
-```
+## Method 1: Updating from New XML (Recommended)
 
-### Extract Components by Type
+When you receive an updated `sp_winemu_all_components12.xml` file:
 
-```bash
-# Extract all drivers (type=2) from HAR file
-jq -r '.log.entries[].response.content.text' /path/to/file.har | \
-  grep -v "^null$" | head -1 | jq -r '.' | \
-  jq -r '.data.list[] | select(.type == 2) | "\(.id)|\(.name)|\(.file_md5)|\(.file_size)"' | \
-  sort -t'|' -k1,1n > /tmp/har_drivers.txt
-```
-
-**Component Types:**
-- Type 1: Box64/FEX Emulators
-- Type 2: GPU Drivers
-- Type 3: DXVK Layers
-- Type 4: VKD3D Proton
-- Type 5: Game Patches
-- Type 6: System Libraries
-- Type 7: Steam Components
-
-### Compare with Existing Components
+### Step 1: Replace the XML File
 
 ```bash
-# Extract existing drivers from manifest
-jq -r '.data.components[] | "\(.id)|\(.name)|\(.file_md5)|\(.file_size)"' \
-  /Users/ghlite/Downloads/gamehub_api/components/drivers_manifest | \
-  sort -t'|' -k1,1n > /tmp/manifest_drivers.txt
-
-# Find differences (new drivers)
-diff /tmp/manifest_drivers.txt /tmp/har_drivers.txt
+cp ./sp_winemu_all_components12.xml ./data/sp_winemu_all_components12.xml
 ```
 
-## Step 2: Files That Need to be Updated
-
-When adding new components, you MUST update these files:
-
-### 1. Component-Specific Manifest
-**Path:** `/Users/ghlite/Downloads/gamehub_api/components/{type}_manifest`
-
-Example for drivers: `components/drivers_manifest`
-
-**What to update:**
-- Update `"total"` count (e.g., 61 → 64)
-- Add new component entries with all fields
-
-**Component Entry Structure:**
-```json
-{
-  "id": 338,
-  "name": "8eGen5-842.8",
-  "type": 2,
-  "version": "1.0.0",
-  "version_code": 1,
-  "file_md5": "f69bfda11b5ada8e6542e94896570193",
-  "file_size": "12568832",
-  "download_url": "https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/pc_zst/f69b/fd/a1/f69bfda11b5ada8e6542e94896570193.tzst",
-  "file_name": "8eGen5-842.8.tzst",
-  "display_name": "",
-  "is_ui": 1,
-  "logo": "https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/game-image/45e6/0d/21/45e60d211d35955bd045aabfded4e64b.png"
-}
-```
-
-**Important:** Group similar components together (e.g., turnip with turnip, 8Elite with 8Elite)
-
-### 2. Components Index
-**Path:** `/Users/ghlite/Downloads/gamehub_api/components/index`
-
-**What to update:**
-- Update `"total_components"` (e.g., 256 → 259)
-- Update category `"count"` for the specific type (e.g., drivers: 61 → 64)
-
-```json
-{
-  "data": {
-    "total_components": 259,
-    "categories": [
-      {
-        "type": 2,
-        "name": "drivers",
-        "count": 64  // Update this
-      }
-    ]
-  }
-}
-```
-
-### 3. Downloads File
-**Path:** `/Users/ghlite/Downloads/gamehub_api/components/downloads`
-
-**What to update:**
-- Update `"total"` count (e.g., 256 → 259)
-- Add new entries to the `"list"` array
-
-**Important:** This file has a DIFFERENT structure - NO `id` field!
-
-```json
-{
-  "name": "8eGen5-842.8",
-  "type": 2,
-  "version": "1.0.0",
-  "download_url": "https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/pc_zst/f69b/fd/a1/f69bfda11b5ada8e6542e94896570193.tzst",
-  "file_name": "8eGen5-842.8.tzst",
-  "file_size": "12568832",
-  "file_md5": "f69bfda11b5ada8e6542e94896570193"
-}
-```
-
-### 4. Get All Component List (CRITICAL!)
-**Path:** `/Users/ghlite/Downloads/gamehub_api/simulator/v2/getAllComponentList`
-
-**What to update:**
-- Update `"total"` count in TWO places (top and bottom of file)
-- Add new component entries to the `"list"` array
-- Group with similar components
-
-**Why Critical:** This file is used by the app to validate installed components. If components aren't in this file, they will be automatically removed when the app closes!
-
-```json
-{
-  "data": {
-    "total": 259,  // Update here (top)
-    "list": [
-      // Add new components here
-    ]
-    "total": 259   // Update here too (bottom)
-  }
-}
-```
-
-## Step 3: Verification Commands
-
-### Verify Component Counts
-```bash
-# Check total matches count
-cd /Users/ghlite/Downloads/gamehub_api
-
-# For drivers_manifest
-jq '.data.total, (.data.components | length)' components/drivers_manifest
-
-# For getAllComponentList
-jq '.data.total, (.data.list | length), (.data.total == (.data.list | length))' simulator/v2/getAllComponentList
-```
-
-### Verify New Components Exist
-```bash
-# Check if specific component IDs exist
-jq '.data.list[] | select(.id == 338 or .id == 337 or .id == 336) | {id: .id, name: .name}' \
-  simulator/v2/getAllComponentList
-```
-
-### Count Components by Type
-```bash
-# Count drivers (type=2)
-jq '.data.list[] | select(.type == 2)' simulator/v2/getAllComponentList | jq -s length
-
-# For downloads file (no ID field)
-jq '.data.list[] | select(.type == 2)' components/downloads | jq -s length
-```
-
-## Step 4: Push Changes to GitHub
+### Step 2: Run the Build
 
 ```bash
-cd /Users/ghlite/Downloads/gamehub_api
+npm run build
+```
 
+The build system will:
+1. Parse all components from the XML
+2. Merge with any custom components
+3. Generate all 16 API endpoint files
+4. Validate all data
+5. Check if all component files exist on GitHub release
+6. Report any missing files with download/upload instructions
+
+### Step 3: Handle Missing Files
+
+If the build reports missing files, it will provide:
+
+1. **Download commands** to fetch files from the original CDN:
+   ```bash
+   mkdir -p /tmp/missing_components && cd /tmp/missing_components
+
+   # Example download command for each missing file:
+   curl -L -o "component_name.tzst" "https://original-cdn-url/component.tzst"
+   ```
+
+2. **Upload command** to add files to GitHub release:
+   ```bash
+   # replace Producdevity/gamehub-lite-api with your fork
+   gh release upload Components "file1.tzst" "file2.tzst" --repo Producdevity/gamehub-lite-api
+   ```
+
+### Step 4: Verify and Commit
+
+After uploading missing files, run the build again:
+
+```bash
+npm run build
+```
+
+If all files exist, commit the changes:
+
+```bash
 git add .
-git commit -m "Add new components: [list component names]
-
-Added X new drivers (IDs: 336, 337, 338)
-- Updated drivers_manifest: 61 → 64
-- Updated components/index: 256 → 259
-- Updated components/downloads: 256 → 259
-- Updated simulator/v2/getAllComponentList: 256 → 259
-
-"
-
+git commit -m "Update components from new XML"
 git push
 ```
 
-## Step 5: Worker (Optional)
+## Method 2: Adding Custom Components
 
-The Cloudflare Worker at `/Users/ghlite/Desktop/dec/worker/src/index.ts` proxies requests to the GitHub static API.
+For components that don't exist in the XML (or have malformed XML data):
 
-**Cache Settings:**
-- 5-minute cache (`cacheTtl: 300`)
-- Automatically fetches from GitHub raw CDN
+### Step 1: Edit custom_components.json
 
-**No changes needed** - Worker automatically serves updated GitHub files after cache expires (5 minutes max).
+Add the component to `data/custom_components.json`:
 
-## Common Issues
+```json
+{
+  "components": [
+    {
+      "id": 316,
+      "name": "steam_9866232",
+      "type": 7,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "steam_9866232.tar.zst",
+      "file_md5": "3d9d01362622a782a27ae691427b786c",
+      "file_size": "41192642"
+    }
+  ]
+}
+```
 
-### Issue: Components disappear after closing app
-**Cause:** Missing from `simulator/v2/getAllComponentList`
-**Fix:** Add components to this file and update both total counts
+**Required fields:**
+- `id` - Unique component ID (check highest existing ID)
+- `name` - Component name
+- `type` - Component type (1-7)
+- `version` - Version string
+- `version_code` - Version number
+- `file_name` - Name of the file on GitHub release
+- `file_md5` - MD5 hash of the file
+- `file_size` - File size in bytes (as STRING, not number)
 
-### Issue: Components show in list but clicking goes back
-**Cause:** Component detail endpoint not working (shouldn't happen with static files)
-**Fix:** Verify component exists in the specific manifest file (e.g., `drivers_manifest`)
+### Step 2: Upload the File
 
-### Issue: Wrong component count
-**Cause:** Forgot to update total in one of the files
-**Fix:** Search for old total and update all occurrences:
+Upload the component file to the GitHub release:
+
 ```bash
-cd /Users/ghlite/Downloads/gamehub_api
-grep -r "\"total\": 256" .
-# Or for specific category:
-grep -r "\"count\": 61" .
+gh release upload Components "component_file.tzst" --repo Producdevity/gamehub-lite-api
 ```
 
-### Issue: File corruption during edit
-**Cause:** Automated reconstruction failed
-**Fix:** Use `git restore` to recover, then edit manually:
+### Step 3: Build and Verify
+
 ```bash
-git restore simulator/v2/getAllComponentList
-# Then edit manually with proper tool
+npm run build
 ```
 
-## Quick Reference: File Checklist
+## GitHub Filename Compatibility
 
-When adding 3 new drivers (example):
+**Important:** GitHub automatically replaces spaces with dots in release asset filenames.
 
-- [ ] `components/drivers_manifest` - Update total, add 3 entries
-- [ ] `components/index` - Update total_components and drivers count
-- [ ] `components/downloads` - Update total, add 3 entries (no ID field!)
-- [ ] `simulator/v2/getAllComponentList` - Update TWO totals, add 3 entries
-- [ ] Verify all counts match with `jq` commands
-- [ ] Git commit and push
-- [ ] Wait 5 minutes for worker cache to expire (or test directly on GitHub raw CDN)
+The build system handles this automatically:
+- XML file name: `Torchlight II.tzst`
+- GitHub file name: `Torchlight.II.tzst`
+- Generated download URL: `https://github.com/.../Torchlight.II.tzst`
 
-## GitHub Raw CDN URLs
+When uploading files with spaces, GitHub will rename them. The build system accounts for this when checking for missing files.
 
-Components are served from:
+## Updating Default Components
+
+To change which components are selected by default, edit `data/defaults.json`:
+
+```json
+{
+  "dxvk": 24,
+  "vkd3d": 7,
+  "steamClient": 334,
+  "container": 2,
+  "genericComponentIds": [7, 8, 24, 345],
+  "qualcommComponentIds": [7, 8, 25, 345, 48]
+}
 ```
-https://raw.githubusercontent.com/[owner]/[repo]/main/components/drivers_manifest
-https://raw.githubusercontent.com/[owner]/[repo]/main/simulator/v2/getAllComponentList
+
+- `dxvk` - Default DXVK component ID
+- `vkd3d` - Default VKD3D component ID
+- `steamClient` - Default Steam client component ID
+- `container` - Default container ID
+- `genericComponentIds` - Components for generic ARM execution preset
+- `qualcommComponentIds` - Components for Qualcomm-specific preset
+
+## Validation
+
+Run validation without generating files:
+
+```bash
+npm run validate
 ```
 
-The worker proxies these URLs with caching.
+This checks:
+- All required data is present
+- Component IDs are unique
+- MD5 hashes are a valid format
+- Default component IDs exist
+- All referenced components exist
 
-## Notes
+## Generated Files
 
-- Always use exact values from HAR file (MD5, file size, URLs)
-- Group similar components together for better organization
-- The `downloads` file has different structure (no ID field)
-- `getAllComponentList` has TWO total fields that must match
-- Worker caches for 5 minutes - changes may not be immediate
-- Test with direct GitHub raw URLs if worker seems cached
+The build system generates these 16 files:
 
-## Example: Adding 3 New Drivers
+**Component Manifests** (`components/`):
+- `box64_manifest` - Type 1 components
+- `drivers_manifest` - Type 2 components
+- `dxvk_manifest` - Type 3 components
+- `vkd3d_manifest` - Type 4 components
+- `games_manifest` - Type 5 components
+- `libraries_manifest` - Type 6 components
+- `steam_manifest` - Type 7 components
+- `index` - Component counts by type
+- `downloads` - All downloadable files
 
-1. Extract from HAR: IDs 336, 337, 338
-2. Update `drivers_manifest`: 61 → 64 drivers
-3. Update `components/index`: 256 → 259 total, 61 → 64 drivers
-4. Update `components/downloads`: 256 → 259 total
-5. Update `simulator/v2/getAllComponentList`: 256 → 259 total (twice!)
-6. Verify with jq
-7. Git commit and push
-8. Wait 5 minutes or refresh cache
+**Simulator Endpoints** (`simulator/`):
+- `v2/getAllComponentList` - All components
+- `v2/getComponentList` - Type 1 components only
+- `v2/getContainerList` - Wine/Proton containers
+- `v2/getDefaultComponent` - Default selections
+- `v2/getImagefsDetail` - Firmware info
+- `executeScript/generic` - Generic ARM preset
+- `executeScript/qualcomm` - Qualcomm preset
+
+## Troubleshooting
+
+### Build fails with "Missing files"
+
+The build intentionally fails if component files don't exist on GitHub. This prevents deploying broken configurations.
+
+**Solution:** Upload the missing files using the provided commands, then rebuild.
+
+### Component is not appearing in app
+
+1. Check the component exists in XML or `custom_components.json`
+2. Run `npm run build` to regenerate all files
+3. Verify the file exists on GitHub release
+4. Wait 5 minutes for the CDN cache to expire
+
+### Invalid MD5 hash error
+
+Ensure the MD5 hash is exactly 32 lowercase hexadecimal characters.
+
+### file_size must be a string error
+
+In `custom_components.json`, `file_size` must be a string of the file size in bytes:
+```json
+"file_size": "41192642"  // Correct
+"file_size": 41192642    // Wrong - will cause validation error
+```
+
+## Quick Reference
+
+```bash
+# Full build with validation and missing file check
+npm run build
+
+# Validate only (no file generation)
+npm run validate
+
+# Check GitHub release assets manually
+gh release view Components --repo Producdevity/gamehub-lite-api --json assets
+
+# Upload files to release
+gh release upload Components file1.tzst file2.tzst --repo Producdevity/gamehub-lite-api
+```
 
 ---
 
-**Last Updated:** October 2025
+**Last Updated:** December 2025

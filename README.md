@@ -1,446 +1,184 @@
-# GameHub Static API
+# GameHub Lite API
 
-Privacy-respecting static JSON API for the GameHub Android app. This repository hosts all the configuration files, component manifests, and mock responses that were previously served by Chinese servers.
+Privacy-respecting static JSON API for the GameHub Android app. This repository hosts all configuration files, component manifests, and API responses.
 
-**GitHub Repository:** `https://github.com/Producdevity/gamehub-lite-api`
-**Raw URL Base:** `https://raw.githubusercontent.com/Producdevity/gamehub-lite-api/master/`
+**GameHub Lite App/Patch Repository:** `https://github.com/Producdevity/gamehub-lite`
 
----
+## Build System
 
-## What This Repository Contains
+This repository uses a TypeScript build system that automatically generates all API endpoint files from:
+- `sp_winemu_all_components12.xml` - Official GameHub component data
+- `data/custom_components.json` - Custom components not in the XML
+- `data/*.json` - Static configuration files
 
-This is a **static file repository** that stores JSON configuration files and data manifests. It works together with the [Cloudflare Worker](https://github.com/Producdevity/gamehub-lite-worker) to provide a complete privacy-respecting API infrastructure.
+### Quick Start
 
-All files in this repository are served via GitHub's raw content API and consumed by the Cloudflare Worker proxy.
+```bash
+# Install dependencies
+npm install
 
----
+# Build all files
+npm run build
+
+# Validate without generating
+npm run validate
+```
+
+### Build Output
+
+The build system generates 16 API endpoint files:
+
+**Component Manifests** (`components/`):
+- `box64_manifest` - Type 1: Box64/FEX emulators
+- `drivers_manifest` - Type 2: GPU drivers (Turnip, Adreno, etc.)
+- `dxvk_manifest` - Type 3: DXVK layers
+- `vkd3d_manifest` - Type 4: VKD3D Proton
+- `games_manifest` - Type 5: Game patches/configs
+- `libraries_manifest` - Type 6: Windows libraries
+- `steam_manifest` - Type 7: Steam components
+- `index` - Component counts by type
+- `downloads` - All downloadable files
+
+**Simulator Endpoints** (`simulator/`):
+- `v2/getAllComponentList` - All components
+- `v2/getComponentList` - Type 1 components only
+- `v2/getContainerList` - Wine/Proton containers
+- `v2/getDefaultComponent` - Default component selection
+- `v2/getImagefsDetail` - Firmware info
+- `executeScript/generic` - Generic ARM execution preset
+- `executeScript/qualcomm` - Qualcomm-specific preset
+
+### Missing Files Check
+
+The build system automatically checks if all component files exist on the GitHub release and will:
+1. Report any missing files
+2. Provide download commands from the official CDN
+3. Provide upload commands for GitHub
+4. **Fail the build** if files are missing (prevents broken deployments)
 
 ## Directory Structure
 
 ```
-gamehub_api/
-├── agreement/              # User agreement files
-├── base/
-│   └── getBaseInfo         # App base configuration
-├── card/                   # Game card/detail endpoints (mostly empty)
-├── cloud/
-│   └── game/
-│       └── check_user_timer  # Cloud sync timer (empty)
-├── components/             # Component download manifests
-│   ├── box64_manifest      # Box64 emulator versions (13 items)
-│   ├── drivers_manifest    # GPU drivers (50+ items)
-│   ├── dxvk_manifest       # DirectX to Vulkan layers
-│   ├── vkd3d_manifest      # Direct3D 12 to Vulkan
-│   ├── games_manifest      # Pre-configured game profiles
-│   ├── libraries_manifest  # Windows libraries for Wine
-│   └── steam_manifest      # Steam integration files
-├── devices/                # Device compatibility info
-├── email/                  # Email endpoints (empty)
-├── ems/                    # EMS endpoints (empty)
-├── game/
-│   ├── getDnsIpPool        # DNS pool (empty - allows direct Steam connections)
-│   ├── getSteamHost/
-│   │   └── index           # Steam CDN IPs (hosts file format)
-│   └── ...                 # Other game-related endpoints
-├── simulator/
-│   └── v2/
-│       └── getComponentList  # Component list endpoint
-├── upgrade/                # App update info
-└── user/                   # User endpoints (empty)
+gamehub-lite-api/
+├── src/                    # TypeScript source code
+│   ├── index.ts           # Main entry point
+│   ├── parsers/           # XML and JSON parsers
+│   ├── generators/        # Output file generators
+│   ├── registry/          # Component registry
+│   ├── types/             # TypeScript types
+│   └── utils/             # Utilities
+├── data/                   # Configuration and source files
+│   ├── sp_winemu_all_components12.xml  # Source XML from GameHub
+│   ├── containers.json    # Wine/Proton containers
+│   ├── imagefs.json       # Firmware configuration
+│   ├── defaults.json      # Default component selection
+│   ├── execution_config.json  # Execution settings
+│   └── custom_components.json # Custom components
+├── components/             # Generated manifests
+├── simulator/              # Generated API endpoints
+└── package.json
 ```
-
----
-
-## Component Manifests
-
-The most important files in this repository are the **component manifests**. These JSON files list all downloadable components for the GameHub app.
-
-### Component Types
-
-#### 1. Box64 Manifest (`components/box64_manifest`)
-
-**Type:** 1
-**Purpose:** Box64 and FEX emulator builds for x86_64 game emulation on ARM64 devices
-**Total Items:** 13
-
-Contains versions like:
-
-- Box64-0.38 (4.1 MB)
-- Box64-0.37-b2 (4.3 MB)
-- Box64-0.37-b1 (4.2 MB)
-- FEX-20251025 (11.0 MB)
-- FEX-20250910 (11.6 MB)
-- FEX-20250823 (11.7 MB)
-- And older versions...
-
-#### 2. Drivers Manifest (`components/drivers_manifest`)
-
-**Type:** 2
-**Purpose:** GPU-specific drivers and Mesa builds
-**Categories:**
-
-- Mali drivers (Panfrost, Bifrost)
-- Adreno drivers (Freedreno, Turnip)
-- PowerVR drivers
-
-#### 3. DXVK Manifest (`components/dxvk_manifest`)
-
-**Type:** 3
-**Purpose:** DirectX 9/10/11 to Vulkan translation layers
-
-#### 4. VKD3D Manifest (`components/vkd3d_manifest`)
-
-**Type:** 4
-**Purpose:** Direct3D 12 to Vulkan translation layers
-
-#### 5. Games Manifest (`components/games_manifest`)
-
-**Type:** 5
-**Purpose:** Pre-configured Wine prefixes and game-specific configurations
-
-#### 6. Libraries Manifest (`components/libraries_manifest`)
-
-**Type:** 6
-**Purpose:** Windows DLLs and libraries for Wine compatibility
-
-#### 7. Steam Manifest (`components/steam_manifest`)
-
-**Type:** 7
-**Purpose:** Steam client integration files
-
----
-
-## Manifest File Format
-
-All component manifests follow this JSON structure:
-
-```json
-{
-  "code": 200,
-  "msg": "Success",
-  "data": {
-    "type": 1,
-    "type_name": "box64",
-    "display_name": "Box64 Emulators",
-    "total": 13,
-    "components": [
-      {
-        "id": 327,
-        "name": "Box64-0.37-b2",
-        "display_name": "",
-        "version": "1.0.0",
-        "version_code": 1,
-        "download_url": "https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/pc_zst/bfb6/b3/91/bfb6b3914b8f7abb792d8acafa676861.tzst",
-        "file_md5": "bfb6b3914b8f7abb792d8acafa676861",
-        "file_size": "4272182",
-        "file_name": "Box64-0.37-b2.tzst",
-        "logo": "https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/game-image/45e6/0d/21/45e60d211d35955bd045aabfded4e64b.png",
-        "is_ui": 1,
-        "type": 1
-      }
-      // ... more components
-    ]
-  }
-}
-```
-
-**Key Fields:**
-
-- `id` - Unique component identifier
-- `name` - Component name
-- `download_url` - Direct CDN link (downloads bypass the worker)
-- `file_md5` - MD5 checksum for verification
-- `file_size` - Size in bytes
-- `file_name` - Filename with extension (.tzst typically)
-- `type` - Component type (1-7)
-
----
 
 ## Configuration Files
 
-### base/getBaseInfo
+### data/defaults.json
 
-App base configuration returned on startup:
-
-```json
-{
-  "code": 200,
-  "msg": "Success",
-  "data": {
-    "cloud_game_switch": 2,
-    "guide_info_img": "https://zlyer-cdn-comps-en.bigeyes.com/...",
-    "guide_storage_img": "https://zlyer-cdn-comps-en.bigeyes.com/..."
-  },
-  "time": "1759483449"
-}
-```
-
-### game/getSteamHost/index
-
-Steam CDN optimization hosts file (plain text):
-
-```
-#steam Start
-23.47.27.74         steamcommunity.com
-104.94.121.98       www.steamcommunity.com
-23.45.149.185       store.steampowered.com
-23.47.27.74         api.steampowered.com
-23.53.35.201        store.akamai.steamstatic.com
-#steam End
-# Last Update Time : 2025-06-30 09:55:04
-```
-
-### cloud/game/check_user_timer
-
-Empty response (cloud sync feature removed):
+Configures default component selections:
 
 ```json
 {
-  "code": 200,
-  "msg": "",
-  "data": []
+  "dxvk": 24,
+  "vkd3d": 7,
+  "steamClient": 334,
+  "container": 2,
+  "genericComponentIds": [7, 8, 24, 345],
+  "qualcommComponentIds": [7, 8, 25, 345, 48],
+  "genericContext": { ... },
+  "qualcommContext": { ... }
 }
 ```
 
-### game/getDnsIpPool
+### data/custom_components.json
 
-Empty DNS pool (allows direct Steam connections):
+Add components that aren't in the official XML:
 
 ```json
 {
-  "code": 200,
-  "msg": "",
-  "data": []
+  "components": [
+    {
+      "id": 316,
+      "name": "steam_9866232",
+      "type": 7,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "steam_9866232.tar.zst",
+      "file_md5": "3d9d01362622a782a27ae691427b786c",
+      "file_size": "41192642"
+    }
+  ]
 }
 ```
 
----
+## Component Types
 
-## How This Works With The Cloudflare Worker
+| Type | Name | Description |
+|------|------|-------------|
+| 1 | Box64/FEX | x86_64 emulators for ARM64 |
+| 2 | GPU Drivers | Turnip, Adreno, Mali drivers |
+| 3 | DXVK | DirectX 9/10/11 to Vulkan |
+| 4 | VKD3D | Direct3D 12 to Vulkan |
+| 5 | Games | Game-specific patches/configs |
+| 6 | Libraries | Windows DLLs for Wine |
+| 7 | Steam | Steam client components |
 
+## GitHub Compatibility
+
+GitHub release assets automatically replace spaces with dots in file names. The build system handles this by:
+1. Storing original file names from XML
+2. Converting spaces to dots for GitHub URLs
+3. Checking files exist on GitHub with the converted names
+
+Example: `Torchlight II.tzst` → `Torchlight.II.tzst`
+
+## Adding New Components
+
+### From Updated XML
+
+1. Replace `data/sp_winemu_all_components12.xml` with the new version
+2. Run `npm run build`
+3. Review the diff and commit changes
+4. Upload any missing files reported by the build
+
+### Custom Components
+
+1. Add to `data/custom_components.json`
+2. Run `npm run build`
+3. Upload the component file to GitHub release
+
+## CDN and Downloads
+
+Component files are hosted on GitHub Releases:
 ```
-[GameHub App]
-     ↓
-[Cloudflare Worker] ← Routes requests
-     ↓
-     ├─→ GitHub (this repository) ← Static data
-     ├─→ Chinese Server ← Game metadata (IP hidden)
-     └─→ Worker-generated ← Empty responses
-```
-
-**Request Flow Example:**
-
-1. App requests: `POST /simulator/v2/getComponentList` (type=1, page=1)
-2. Worker fetches: `https://raw.githubusercontent.com/Producdevity/gamehub-lite-api/master/components/box64_manifest`
-3. GitHub returns: Full manifest JSON
-4. Worker transforms: Paginates and renames "components" → "list"
-5. App receives: Page 1 of Box64 components
-6. App downloads: Direct from CDN (worker not involved)
-
----
-
-## Maintenance
-
-### Adding New Components
-
-1. Edit the appropriate manifest file:
-
-   ```bash
-   vim components/box64_manifest
-   ```
-
-2. Add new component entry to the `components` array:
-
-   ```json
-   {
-     "id": 346,
-     "name": "Box64-0.39-b1",
-     "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Box64-0.39-b1.tzst",
-     "file_md5": "abc123...",
-     "file_size": "4300000",
-     "file_name": "Box64-0.39-b1.tzst",
-     "type": 1,
-     "version": "1.0.0",
-     "version_code": 1,
-     "is_ui": 1,
-     "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png"
-   }
-   ```
-
-3. Update the `total` count in `data` object
-
-4. Update all API endpoint files that reference this component type:
-
-   - `components/downloads` - Add to downloads array, update total
-   - `simulator/v2/getAllComponentList` - Add to list array, update total
-   - `simulator/v2/getComponentList` - Add to list array, update total
-   - `simulator/executeScript/qualcomm` - Add to components array (if Fex/Box64)
-   - `simulator/executeScript/generic` - Add to components array (if Fex/Box64)
-
-5. Upload the component file (.tzst) to GitHub releases:
-
-   ```bash
-   # Go to: https://github.com/Producdevity/gamehub-lite-api/releases/tag/Components
-   # Upload the .tzst file via the web interface
-   ```
-
-6. Commit and push:
-
-   ```bash
-   git add .
-   git commit -m "feat: add Box64 0.38-b1"
-   git push origin main
-   ```
-
-7. Changes propagate:
-   - GitHub: < 10 seconds
-   - Cloudflare Worker cache: 5 minutes
-   - App receives: Next request after cache expiry
-
-### Updating Configuration
-
-Edit files in `base/`, `game/`, `cloud/`, etc. and push changes. Same propagation timing applies.
-
----
-
-## File Formats
-
-**JSON Files:**
-
-- All manifests and configs
-- Standard JSON with pretty printing
-- Use UTF-8 encoding
-
-**Plain Text:**
-
-- `game/getSteamHost/index` (hosts file format)
-- Line-separated, no JSON wrapper
-
----
-
-## Privacy Features
-
-### What This Repository Does NOT Contain
-
-- ❌ User data
-- ❌ Analytics tracking
-- ❌ Personal information
-- ❌ Device fingerprints
-- ❌ IP addresses
-
-### What It DOES Contain
-
-- ✅ Public component manifests
-- ✅ Open source configuration data
-- ✅ CDN download links (publicly accessible)
-- ✅ Steam optimization data
-- ✅ Empty responses for removed features
-
----
-
-## CDN Downloads
-
-All component downloads are hosted on external CDN:
-
-```
-https://zlyer-cdn-comps-en.bigeyes.com/ux-landscape/pc_zst/...
+https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/{filename}
 ```
 
-**Important:**
-
-- This repository only provides download URLs
-- Actual file downloads are direct from CDN
-- Worker and GitHub never see download traffic
-- Your IP is not logged by us using this infrastructure
-
----
-
-## Response Format
-
-All API responses follow this structure:
-
-```json
-{
-  "code": 200,           // HTTP-like status code
-  "msg": "Success",      // Status message
-  "data": { ... },       // Actual response data
-  "time": "1759483449"   // Unix timestamp (optional)
-}
-```
-
-**Status Codes:**
-
-- `200` - Success
-- `500` - Error (rare, only for malformed files)
-
----
-
-## Repository Stats
-
-- **Total Files:** ~50+ JSON files
-- **Total Size:** < 1 MB (all text-based)
-- **Update Frequency:** As needed (new component releases)
-- **Public Access:** Yes (GitHub raw URLs)
-
----
-
-## Usage
-
-**Direct Access (Not Recommended):**
-
-```bash
-curl https://raw.githubusercontent.com/Producdevity/gamehub-lite-api/master/components/box64_manifest
-```
-
-**Via Cloudflare Worker (Recommended):**
-
-```bash
-curl -X POST https://gamehub-lite-api.emuready.workers.dev/simulator/v2/getComponentList \
-  -H "Content-Type: application/json" \
-  -d '{"type": 1, "page": 1, "page_size": 10}'
-```
-
-The worker adds:
-
-- Pagination
-- CORS headers
-- Caching
-- Field transformations
-- Error handling
-
----
+The build system rewrites all download URLs to point to GitHub.
 
 ## Related Projects
 
-| Repository                                                                               | Description                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [gamehub-lite](https://github.com/Producdevity/gamehub-lite)                             | Main project with pre-built APK releases                                                                                                                         |
-| [gamehub-lite-api](https://github.com/Producdevity/gamehub-lite-api)                     | Static JSON API hosting component manifests, configuration files, and mock responses that replace the original Chinese servers                                   |
-| [gamehub-lite-worker](https://github.com/Producdevity/gamehub-lite-worker)               | Cloudflare Worker API proxy that handles token management, signature regeneration, privacy protection (IP hiding, fingerprint sanitization), and content routing |
-| [gamehub-lite-news](https://github.com/Producdevity/gamehub-lite-news)                   | News aggregator that collects gaming news from RSS feeds and GitHub releases, transforms them into GameHub's API format                                          |
-| [gamehub-lite-token-refresh](https://github.com/Producdevity/gamehub-lite-token-refresh) | Automated token refresher that uses Mail.tm OTP authentication to maintain valid GameHub tokens, runs every 4 hours via Cloudflare Cron                          |
+| Repository | Description |
+|------------|-------------|
+| [gamehub-lite](https://github.com/Producdevity/gamehub-lite) | Main project with pre-built APK releases |
+| [gamehub-lite-api](https://github.com/Producdevity/gamehub-lite-api) | Static JSON API hosting component manifests, configuration files, and mock responses that replace the original Chinese servers |
+| [gamehub-lite-worker](https://github.com/Producdevity/gamehub-lite-worker) | Cloudflare Worker API proxy that handles token management, signature regeneration, privacy protection (IP hiding, fingerprint sanitization), and content routing |
+| [gamehub-lite-news](https://github.com/Producdevity/gamehub-lite-news) | News aggregator that collects gaming news from RSS feeds and GitHub releases, transforms them into GameHub's API format |
+| [gamehub-lite-token-refresh](https://github.com/Producdevity/gamehub-lite-token-refresh) | Automated token refresher that uses Mail.tm OTP authentication to maintain valid GameHub tokens, runs every 4 hours via Cloudflare Cron |
 
----
+## Privacy
 
-## Technical Details
+This repository contains only:
+- Public component manifests
+- Open source configuration data
+- CDN download links
 
-**Hosting:** GitHub Pages (raw content API)
-**Format:** JSON (UTF-8)
-**Caching:** 5 minutes (Cloudflare Worker)
-**Access:** Public (no authentication)
-**Rate Limits:** GitHub standard limits apply
-
----
-
-## Changelog
-
-### 2025-10-07
-
-- Initial repository setup
-- Added all component manifests
-- Added configuration files
-- Added empty responses for removed features
-
----
-
-**For questions about the Cloudflare Worker integration, see the [gamehub-lite-worker repository](https://github.com/Producdevity/gamehub-lite-worker).**
+No user data, analytics, or tracking.
