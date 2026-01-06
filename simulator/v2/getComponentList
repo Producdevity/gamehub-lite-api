@@ -6,6 +6,51 @@
       {
         "blurb": "",
         "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Fex-20260103.tzst",
+        "file_md5": "ca83779fa610be7ba0f19e6b305a0e8b",
+        "file_name": "Fex-20260103.tzst",
+        "file_size": "12339743",
+        "gpu_range": "",
+        "id": 389,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex-20260103",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "blurb": "",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251217.tzst",
+        "file_md5": "bc508d00a4d352f4e9de6a902aa104bb",
+        "file_name": "fex-20251217.tzst",
+        "file_size": "12078347",
+        "gpu_range": "",
+        "id": 383,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex-20251217",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "blurb": "",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251128.tzst",
+        "file_md5": "194f1014ebd3e2748908f00d327e9ff4",
+        "file_name": "fex-20251128.tzst",
+        "file_size": "11887563",
+        "gpu_range": "",
+        "id": 378,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex-20251128",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "blurb": "",
+        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Fex-20251120.tzst",
         "file_md5": "ac5f526cc50cc8311bc5c46975f37cda",
         "file_name": "Fex-20251120.tzst",
@@ -259,9 +304,9 @@
         "version_code": 67
       }
     ],
-    "total": 17,
+    "total": 20,
     "page": 1,
     "pageSize": 10
   },
-  "time": "1767100708"
+  "time": "1767732377"
 }

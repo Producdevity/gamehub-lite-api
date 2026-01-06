@@ -4,14 +4,14 @@
   "data": {
     "categories": [
       {
-        "count": 17,
+        "count": 20,
         "display_name": "Box64 Emulators",
         "manifest_url": "/components/box64_manifest",
         "name": "box64",
         "type": 1
       },
       {
-        "count": 74,
+        "count": 84,
         "display_name": "GPU Drivers",
         "manifest_url": "/components/drivers_manifest",
         "name": "drivers",
@@ -25,14 +25,14 @@
         "type": 3
       },
       {
-        "count": 4,
+        "count": 5,
         "display_name": "VKD3D Proton",
         "manifest_url": "/components/vkd3d_manifest",
         "name": "vkd3d",
         "type": 4
       },
       {
-        "count": 51,
+        "count": 54,
         "display_name": "Game Patches",
         "manifest_url": "/components/games_manifest",
         "name": "games",
@@ -53,6 +53,6 @@
         "type": 7
       }
     ],
-    "total_components": 290
+    "total_components": 307
   }
 }

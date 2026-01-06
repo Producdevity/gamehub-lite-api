@@ -157,6 +157,33 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251128.tzst",
+        "file_md5": "194f1014ebd3e2748908f00d327e9ff4",
+        "file_name": "fex-20251128.tzst",
+        "file_size": "11887563",
+        "name": "Fex-20251128",
+        "type": 1,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20251217.tzst",
+        "file_md5": "bc508d00a4d352f4e9de6a902aa104bb",
+        "file_name": "fex-20251217.tzst",
+        "file_size": "12078347",
+        "name": "Fex-20251217",
+        "type": 1,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Fex-20260103.tzst",
+        "file_md5": "ca83779fa610be7ba0f19e6b305a0e8b",
+        "file_name": "Fex-20260103.tzst",
+        "file_size": "12339743",
+        "name": "Fex-20260103",
+        "type": 1,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/8Elite2-842.6.tzst",
         "file_md5": "d2c18569d828ba8b7c66804aa8be2d54",
         "file_name": "8Elite2-842.6.tzst",
@@ -310,11 +337,47 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/qcom-800.64.tzst",
+        "file_md5": "bed23f4587576f40ddc2a9a4f3f9b500",
+        "file_name": "qcom-800.64.tzst",
+        "file_size": "15972964",
+        "name": "qcom-800.64",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/842.1.tzst",
+        "file_md5": "cf381367be6ad0e3a643ce18c5f60359",
+        "file_name": "842.1.tzst",
+        "file_size": "12638552",
+        "name": "qcom-842.1",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/qcom-842.13.tzst",
         "file_md5": "b5af77f0407af1ad501994c9758ea23e",
         "file_name": "qcom-842.13.tzst",
         "file_size": "12635889",
         "name": "qcom-842.13",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/qcom-842.16.tzst",
+        "file_md5": "90647d6df97ee5059625ba33de0721b5",
+        "file_name": "qcom-842.16.tzst",
+        "file_size": "12639579",
+        "name": "qcom-842.16",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/qcom-842.19.tzst",
+        "file_md5": "08b584ecdba28756c258c1e8f07e6418",
+        "file_name": "qcom-842.19.tzst",
+        "file_size": "12643197",
+        "name": "qcom-842.19",
         "type": 2,
         "version": "1.0.0"
       },
@@ -823,6 +886,60 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R5.tzst",
+        "file_md5": "fdba91b3fbe57759cca4cb093f630966",
+        "file_name": "turnip_v26.0.0_R5.tzst",
+        "file_size": "3232121",
+        "name": "turnip_v26.0.0_R5",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R5_mem.tzst",
+        "file_md5": "869875410f35db7bbe9ddc4c33d4136f",
+        "file_name": "turnip_v26.0.0_R5_mem.tzst",
+        "file_size": "3230995",
+        "name": "turnip_v26.0.0_R5_mem",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R6.tzst",
+        "file_md5": "9ac71ffd0fad2fb993d5b5f0addcdbce",
+        "file_name": "turnip_v26.0.0_R6.tzst",
+        "file_size": "3334467",
+        "name": "turnip_v26.0.0_R6",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R6_mem.tzst",
+        "file_md5": "ae878ef7c1ddba3b0f6b7e324fc749bf",
+        "file_name": "turnip_v26.0.0_R6_mem.tzst",
+        "file_size": "3332434",
+        "name": "turnip_v26.0.0_R6_mem",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R7.tzst",
+        "file_md5": "2cdb59fcec897aa53d820c658e0a511a",
+        "file_name": "turnip_v26.0.0_R7.tzst",
+        "file_size": "3268186",
+        "name": "turnip_v26.0.0_R7",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R7_mem.tzst",
+        "file_md5": "ca97fb2a4b71ab7d13e0e85330bff306",
+        "file_name": "turnip_v26.0.0_R7_mem.tzst",
+        "file_size": "3268186",
+        "name": "turnip_v26.0.0_R7_mem",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dxvk-0.96.tzst",
         "file_md5": "33983fdd3da95bf015deda2c76895820",
         "file_name": "dxvk-0.96.tzst",
@@ -1120,6 +1237,15 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/vkd3d-proton-3.0b.tzst",
+        "file_md5": "53df43b4a543dad5b0e4b892954d66a9",
+        "file_name": "vkd3d-proton-3.0b.tzst",
+        "file_size": "5011555",
+        "name": "vkd3d-proton-3.0b",
+        "type": 4,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/A.Plague_Settings.tzst",
         "file_md5": "d29609bed803165de777bafa8cff629d",
         "file_name": "A.Plague_Settings.tzst",
@@ -1228,11 +1354,29 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/DontStarve_Settings.tzst",
+        "file_md5": "66f4c616a62aea2f83f3776fb5662ed9",
+        "file_name": "DontStarve_Settings.tzst",
+        "file_size": "657",
+        "name": "DontStarve_Settings",
+        "type": 5,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dyinglight_Settings.tzst",
         "file_md5": "c1ef2ce110c16e540b772e96678f5311",
         "file_name": "dyinglight_Settings.tzst",
         "file_size": "1176",
         "name": "DyingLight_Settings",
+        "type": 5,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/EuroTruck2_Settings.tzst",
+        "file_md5": "1f09565d8d042bcec69323aebd2ab6f0",
+        "file_name": "EuroTruck2_Settings.tzst",
+        "file_size": "2560",
+        "name": "EuroTruck2_Settings",
         "type": 5,
         "version": "1.0.0"
       },
@@ -1557,6 +1701,15 @@
         "file_name": "WRC.9.tzst",
         "file_size": "331666",
         "name": "WRC 9",
+        "type": 5,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Wreckfest_Settings.tzst",
+        "file_md5": "98b2e6918f362a024c2eb8e354af7d5b",
+        "file_name": "Wreckfest_Settings.tzst",
+        "file_size": "873",
+        "name": "Wreckfest_Settings",
         "type": 5,
         "version": "1.0.0"
       },
@@ -2093,9 +2246,9 @@
       },
       {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/K-Lite.yml",
-        "file_md5": "8717e17b6696881c082704b975f02c79",
+        "file_md5": "492db87ac2e9b3122f3db2ad03dd605c",
         "file_name": "K-Lite.yml",
-        "file_size": "433",
+        "file_size": "422",
         "name": "K-Lite",
         "type": 6,
         "version": "1.0.0"
@@ -2191,13 +2344,13 @@
         "version": "1.0.0"
       },
       {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mono1.yml",
-        "file_md5": "f48d4058e1bc4d7d865c9aef11f6e58b",
-        "file_name": "mono1.yml",
-        "file_size": "480",
-        "name": "mono1",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mono-10.4.1.yml",
+        "file_md5": "c7047732b6261572c7df94680698d2d8",
+        "file_name": "mono-10.4.1.yml",
+        "file_size": "491",
+        "name": "mono-10.4.1",
         "type": 6,
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/msasn1.yml",
@@ -2614,6 +2767,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 290
+    "total": 307
   }
 }
