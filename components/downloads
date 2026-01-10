@@ -391,6 +391,15 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_a8xx.tzst",
+        "file_md5": "b38649f5bf073a125913b216a3e45d85",
+        "file_name": "turnip_a8xx.tzst",
+        "file_size": "2270853",
+        "name": "turnip_a8xx",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_24.2.0_a32.tzst",
         "file_md5": "39485b41dafea094894c8b41257cd626",
         "file_name": "turnip_24.2.0_a32.tzst",
@@ -936,6 +945,33 @@
         "file_name": "turnip_v26.0.0_R7_mem.tzst",
         "file_size": "3268186",
         "name": "turnip_v26.0.0_R7_mem",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8.tzst",
+        "file_md5": "9bc8ff34acb8f392f35c46b7cba5e92f",
+        "file_name": "Turnip_v26.0.0_R8.tzst",
+        "file_size": "3238818",
+        "name": "Turnip_v26.0.0_R8",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8_Gmem.tzst",
+        "file_md5": "f89d390aa050a2907372366e3fdfe015",
+        "file_name": "Turnip_v26.0.0_R8_Gmem.tzst",
+        "file_size": "3237690",
+        "name": "Turnip_v26.0.0_R8_Gmem",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8_Sysmem.tzst",
+        "file_md5": "442976f4056453bf203be6915e18e99f",
+        "file_name": "Turnip_v26.0.0_R8_Sysmem.tzst",
+        "file_size": "3237690",
+        "name": "Turnip_v26.0.0_R8_Sysmem",
         "type": 2,
         "version": "1.0.0"
       },
@@ -2767,6 +2803,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 307
+    "total": 311
   }
 }

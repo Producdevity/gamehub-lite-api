@@ -284,6 +284,62 @@
         "version_code": 67
       },
       {
+        "display_name": "turnip_a8xx",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_a8xx.tzst",
+        "file_md5": "b38649f5bf073a125913b216a3e45d85",
+        "file_name": "turnip_a8xx.tzst",
+        "file_size": "2270853",
+        "id": 993,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "turnip_a8xx",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "Turnip_v26.0.0_R8_Sysmem",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8_Sysmem.tzst",
+        "file_md5": "442976f4056453bf203be6915e18e99f",
+        "file_name": "Turnip_v26.0.0_R8_Sysmem.tzst",
+        "file_size": "3237690",
+        "id": 992,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Turnip_v26.0.0_R8_Sysmem",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "Turnip_v26.0.0_R8_Gmem",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8_Gmem.tzst",
+        "file_md5": "f89d390aa050a2907372366e3fdfe015",
+        "file_name": "Turnip_v26.0.0_R8_Gmem.tzst",
+        "file_size": "3237690",
+        "id": 991,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Turnip_v26.0.0_R8_Gmem",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "Turnip_v26.0.0_R8",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8.tzst",
+        "file_md5": "9bc8ff34acb8f392f35c46b7cba5e92f",
+        "file_name": "Turnip_v26.0.0_R8.tzst",
+        "file_size": "3238818",
+        "id": 990,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Turnip_v26.0.0_R8",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/qcom-800.64.tzst",
         "file_md5": "bed23f4587576f40ddc2a9a4f3f9b500",
@@ -4302,7 +4358,7 @@
         "version_code": 1
       }
     ],
-    "total": 307
+    "total": 311
   },
-  "time": "1767732377"
+  "time": "1768058599"
 }
