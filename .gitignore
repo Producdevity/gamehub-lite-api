@@ -6,6 +6,7 @@ dist/
 
 # Temporary downloads
 .tmp_components/
+.tmp_drivers/
 
 # IDE
 .idea/
