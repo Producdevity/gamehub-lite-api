@@ -9,6 +9,7 @@
     "sync": "tsc && node dist/index.js sync",
     "validate": "tsc && node dist/index.js validate",
     "diff": "tsc && node dist/index.js diff",
+    "convert-drivers": "tsc && node dist/scripts/convert-drivers.js",
     "compile": "tsc",
     "dev": "tsc --watch"
   },
