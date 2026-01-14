@@ -52,6 +52,16 @@
       "file_name": "turnip_a8xx.tzst",
       "file_md5": "b38649f5bf073a125913b216a3e45d85",
       "file_size": "2270853"
+    },
+    {
+      "id": 994,
+      "name": "a8xx-gen8-V16",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "a8xx-gen8-V16.tzst",
+      "file_md5": "f5f5816260b32b3ed69d0246a9812088",
+      "file_size": "2559682"
     }
   ]
 }

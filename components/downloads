@@ -301,6 +301,15 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/a8xx-gen8-V16.tzst",
+        "file_md5": "f5f5816260b32b3ed69d0246a9812088",
+        "file_name": "a8xx-gen8-V16.tzst",
+        "file_size": "2559682",
+        "name": "a8xx-gen8-V16",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/adreno_762.10.tzst",
         "file_md5": "4e046e11d23c2f403cb85453180ccf0e",
         "file_name": "adreno_762.10.tzst",
@@ -2803,6 +2812,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 311
+    "total": 312
   }
 }

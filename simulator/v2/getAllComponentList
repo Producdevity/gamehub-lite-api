@@ -284,6 +284,20 @@
         "version_code": 67
       },
       {
+        "display_name": "a8xx-gen8-V16",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/a8xx-gen8-V16.tzst",
+        "file_md5": "f5f5816260b32b3ed69d0246a9812088",
+        "file_name": "a8xx-gen8-V16.tzst",
+        "file_size": "2559682",
+        "id": 994,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "a8xx-gen8-V16",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
         "display_name": "turnip_a8xx",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_a8xx.tzst",
         "file_md5": "b38649f5bf073a125913b216a3e45d85",
@@ -4358,7 +4372,7 @@
         "version_code": 1
       }
     ],
-    "total": 311
+    "total": 312
   },
-  "time": "1768059455"
+  "time": "1768410622"
 }
