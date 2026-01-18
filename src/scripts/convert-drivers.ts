@@ -10,10 +10,10 @@
  *   1. Convert each .zip to .tzst format (matching existing driver format)
  *   2. Calculate MD5 hash and file size
  *   3. Add entries to data/custom_components.json
- *   4. Output the .tzst files to .tmp_drivers/ for manual upload to GitHub
+ *   4. Optionally upload to GitHub, run build, and cleanup
  */
 
-import { execSync } from 'child_process'
+import { execSync, spawnSync } from 'child_process'
 import { createHash } from 'crypto'
 import {
   existsSync,
@@ -24,10 +24,24 @@ import {
   writeFileSync,
 } from 'fs'
 import { basename, join } from 'path'
+import * as readline from 'readline'
 
 const TMP_DRIVERS_DIR = '.tmp_drivers'
 const CUSTOM_COMPONENTS_PATH = 'data/custom_components.json'
+const GITHUB_REPO = 'Producdevity/gamehub-lite-api'
 const COMPONENT_TYPE_GPU_DRIVER = 2
+
+// ANSI color codes
+const colors = {
+  reset: '\x1b[0m',
+  bold: '\x1b[1m',
+  dim: '\x1b[2m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  cyan: '\x1b[36m',
+  red: '\x1b[31m',
+}
 
 interface CustomComponent {
   id: number
@@ -47,11 +61,67 @@ interface CustomComponentsFile {
   components: CustomComponent[]
 }
 
+function prompt(question: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close()
+      resolve(answer.trim().toLowerCase())
+    })
+  })
+}
+
+async function confirm(message: string): Promise<boolean> {
+  const answer = await prompt(
+    `${colors.cyan}?${colors.reset} ${message} ${colors.dim}(Y/n)${colors.reset} `,
+  )
+  return answer === '' || answer === 'y' || answer === 'yes'
+}
+
+function runCommand(
+  command: string,
+  description: string,
+): { success: boolean; output: string } {
+  console.log(`\n${colors.dim}$ ${command}${colors.reset}`)
+  try {
+    const output = execSync(command, {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    console.log(`${colors.green}✓${colors.reset} ${description}`)
+    return { success: true, output }
+  } catch (error) {
+    const err = error as { stderr?: string; message?: string }
+    console.log(`${colors.red}✗${colors.reset} ${description}`)
+    console.log(
+      `${colors.red}  Error: ${err.stderr || err.message}${colors.reset}`,
+    )
+    return { success: false, output: err.stderr || err.message || '' }
+  }
+}
+
+function runCommandInteractive(command: string, description: string): boolean {
+  console.log(`\n${colors.dim}$ ${command}${colors.reset}\n`)
+  const result = spawnSync(command, {
+    shell: true,
+    stdio: 'inherit',
+  })
+  if (result.status === 0) {
+    console.log(`\n${colors.green}✓${colors.reset} ${description}`)
+    return true
+  } else {
+    console.log(`\n${colors.red}✗${colors.reset} ${description}`)
+    return false
+  }
+}
+
 function findNextId(components: CustomComponent[], xmlPath: string): number {
-  // Find highest ID from custom components
   const customMaxId = components.reduce((max, c) => Math.max(max, c.id), 0)
 
-  // Find highest ID from XML
   let xmlMaxId = 0
   if (existsSync(xmlPath)) {
     const xmlContent = readFileSync(xmlPath, 'utf-8')
@@ -61,10 +131,8 @@ function findNextId(components: CustomComponent[], xmlPath: string): number {
     }
   }
 
-  // Start from 990 for custom drivers to avoid conflicts, or use max + 1 if higher
   const baseId = 990
   const maxExisting = Math.max(customMaxId, xmlMaxId)
-
   return maxExisting >= baseId ? maxExisting + 1 : baseId
 }
 
@@ -82,13 +150,11 @@ function convertZipToTzst(zipPath: string, outputDir: string): string {
   const tzstPath = join(outputDir, `${zipName}.tzst`)
   const tempDir = join(outputDir, '.tmp_convert')
 
-  // Create temp directory
   if (!existsSync(tempDir)) {
     mkdirSync(tempDir, { recursive: true })
   }
 
   try {
-    // Find the .so file in the zip
     const listOutput = execSync(`unzip -l "${zipPath}"`, { encoding: 'utf-8' })
     const soMatch = listOutput.match(/(\S+\.so)$/m)
     if (!soMatch) {
@@ -96,24 +162,20 @@ function convertZipToTzst(zipPath: string, outputDir: string): string {
     }
     const soFileName = soMatch[1]
 
-    // Extract the .so file
     const extractedSo = join(tempDir, 'libvulkan_freedreno.so')
     execSync(`unzip -p "${zipPath}" "${soFileName}" > "${extractedSo}"`, {
       shell: '/bin/bash',
     })
 
-    // Create tar archive
     const tarPath = join(tempDir, `${zipName}.tar`)
     execSync(
       `tar --owner=root --group=root -cf "${tarPath}" -C "${tempDir}" ./libvulkan_freedreno.so`,
     )
 
-    // Compress with zstd
     execSync(`zstd -q --rm "${tarPath}" -o "${tzstPath}"`)
 
     return tzstPath
   } finally {
-    // Cleanup temp files
     try {
       execSync(`rm -rf "${tempDir}"`)
     } catch {
@@ -122,16 +184,18 @@ function convertZipToTzst(zipPath: string, outputDir: string): string {
   }
 }
 
-function main() {
-  console.log('GPU Driver Converter')
-  console.log('====================\n')
+async function main() {
+  console.log(
+    `\n${colors.bold}${colors.blue}GPU Driver Converter${colors.reset}`,
+  )
+  console.log(`${colors.dim}${'─'.repeat(40)}${colors.reset}\n`)
 
   // Check if tmp_drivers directory exists
   if (!existsSync(TMP_DRIVERS_DIR)) {
     console.log(`Creating ${TMP_DRIVERS_DIR}/ directory...`)
     mkdirSync(TMP_DRIVERS_DIR, { recursive: true })
     console.log(
-      `\nPlace your .zip driver files in ${TMP_DRIVERS_DIR}/ and run again.`,
+      `\n${colors.yellow}Place your .zip driver files in ${TMP_DRIVERS_DIR}/ and run again.${colors.reset}`,
     )
     return
   }
@@ -142,15 +206,15 @@ function main() {
   )
 
   if (zipFiles.length === 0) {
-    console.log(`No .zip files found in ${TMP_DRIVERS_DIR}/`)
+    console.log(`${colors.yellow}No .zip files found in ${TMP_DRIVERS_DIR}/${colors.reset}`)
     console.log(
       `\nPlace your .zip driver files in ${TMP_DRIVERS_DIR}/ and run again.`,
     )
     return
   }
 
-  console.log(`Found ${zipFiles.length} .zip file(s):\n`)
-  zipFiles.forEach((f) => console.log(`  - ${f}`))
+  console.log(`Found ${colors.bold}${zipFiles.length}${colors.reset} .zip file(s):\n`)
+  zipFiles.forEach((f) => console.log(`  ${colors.dim}•${colors.reset} ${f}`))
   console.log('')
 
   // Load custom components
@@ -158,7 +222,6 @@ function main() {
     readFileSync(CUSTOM_COMPONENTS_PATH, 'utf-8'),
   )
 
-  // Find starting ID
   let nextId = findNextId(
     customComponentsData.components,
     'data/sp_winemu_all_components12.xml',
@@ -171,21 +234,19 @@ function main() {
     const zipPath = join(TMP_DRIVERS_DIR, zipFile)
     const driverName = basename(zipFile, '.zip')
 
-    console.log(`Converting: ${zipFile}`)
+    console.log(`${colors.blue}Converting:${colors.reset} ${zipFile}`)
 
-    // Check if already exists in custom components
     const exists = customComponentsData.components.some(
       (c) => c.name === driverName || c.file_name === `${driverName}.tzst`,
     )
     if (exists) {
       console.log(
-        `  ⚠ Skipping: "${driverName}" already exists in custom_components.json\n`,
+        `  ${colors.yellow}⚠ Skipping:${colors.reset} "${driverName}" already exists\n`,
       )
       continue
     }
 
     try {
-      // Convert to tzst
       const tzstPath = convertZipToTzst(zipPath, TMP_DRIVERS_DIR)
       const md5 = getMd5(tzstPath)
       const fileSize = getFileSize(tzstPath)
@@ -204,46 +265,65 @@ function main() {
       newComponents.push(component)
       createdFiles.push(basename(tzstPath))
 
-      console.log(`  ✓ Created: ${basename(tzstPath)}`)
-      console.log(`    ID: ${component.id}`)
-      console.log(`    MD5: ${md5}`)
-      console.log(`    Size: ${fileSize} bytes\n`)
+      console.log(`  ${colors.green}✓${colors.reset} Created: ${basename(tzstPath)}`)
+      console.log(`    ${colors.dim}ID: ${component.id} | MD5: ${md5.slice(0, 8)}... | Size: ${(parseInt(fileSize) / 1024 / 1024).toFixed(2)} MB${colors.reset}\n`)
     } catch (error) {
       console.error(
-        `  ✗ Error: ${error instanceof Error ? error.message : error}\n`,
+        `  ${colors.red}✗ Error:${colors.reset} ${error instanceof Error ? error.message : error}\n`,
       )
     }
   }
 
   if (newComponents.length === 0) {
-    console.log('No new drivers to add.')
+    console.log(`${colors.yellow}No new drivers to add.${colors.reset}`)
     return
   }
 
   // Add new components to custom_components.json
   customComponentsData.components.push(...newComponents)
-
   writeFileSync(
     CUSTOM_COMPONENTS_PATH,
     JSON.stringify(customComponentsData, null, 2) + '\n',
   )
 
-  console.log('─'.repeat(50))
+  console.log(`${colors.dim}${'─'.repeat(40)}${colors.reset}`)
   console.log(
-    `\n✓ Added ${newComponents.length} driver(s) to custom_components.json`,
+    `\n${colors.green}✓${colors.reset} Added ${colors.bold}${newComponents.length}${colors.reset} driver(s) to custom_components.json`,
   )
-  console.log(`\nCreated .tzst files in ${TMP_DRIVERS_DIR}/:`)
-  createdFiles.forEach((f) => console.log(`  - ${f}`))
+  console.log(`\n${colors.bold}Created files:${colors.reset}`)
+  createdFiles.forEach((f) => console.log(`  ${colors.dim}•${colors.reset} ${TMP_DRIVERS_DIR}/${f}`))
 
-  console.log(`\nNext steps:`)
-  console.log(`  1. Upload to GitHub release:`)
-  console.log(
-    `     gh release upload Components ${createdFiles.map((f) => `"${TMP_DRIVERS_DIR}/${f}"`).join(' ')} --repo Producdevity/gamehub-lite-api`,
-  )
-  console.log(`\n  2. Run build to verify:`)
-  console.log(`     npm run build`)
-  console.log(`\n  3. (Optional) Delete the temp files:`)
-  console.log(`     rm -rf ${TMP_DRIVERS_DIR}/*`)
+  // Interactive next steps
+  console.log(`\n${colors.dim}${'─'.repeat(40)}${colors.reset}`)
+  console.log(`${colors.bold}${colors.blue}Next Steps${colors.reset}\n`)
+
+  // Step 1: Upload to GitHub
+  const uploadCmd = `gh release upload Components ${createdFiles.map((f) => `"${TMP_DRIVERS_DIR}/${f}"`).join(' ')} --repo ${GITHUB_REPO} --clobber`
+
+  if (await confirm('Upload drivers to GitHub release?')) {
+    runCommand(uploadCmd, 'Uploaded to GitHub release')
+  } else {
+    console.log(`\n${colors.dim}Skipped. Run manually:${colors.reset}`)
+    console.log(`  ${colors.cyan}${uploadCmd}${colors.reset}`)
+  }
+
+  // Step 2: Run build
+  if (await confirm('Run build to verify?')) {
+    runCommandInteractive('npm run build', 'Build completed')
+  } else {
+    console.log(`\n${colors.dim}Skipped. Run manually:${colors.reset}`)
+    console.log(`  ${colors.cyan}npm run build${colors.reset}`)
+  }
+
+  // Step 3: Cleanup
+  if (await confirm('Delete temp files (.tmp_drivers/*)?')) {
+    runCommand(`rm -rf ${TMP_DRIVERS_DIR}/*`, 'Cleaned up temp files')
+  } else {
+    console.log(`\n${colors.dim}Skipped. Run manually:${colors.reset}`)
+    console.log(`  ${colors.cyan}rm -rf ${TMP_DRIVERS_DIR}/*${colors.reset}`)
+  }
+
+  console.log(`\n${colors.green}${colors.bold}Done!${colors.reset}\n`)
 }
 
-main()
+main().catch(console.error)
