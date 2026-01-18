@@ -418,6 +418,15 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V20.tzst",
+        "file_md5": "b3e627c84bd1f447cb58723e020c7eb6",
+        "file_name": "Turnip_Gen8_V20.tzst",
+        "file_size": "3331097",
+        "name": "Turnip_Gen8_V20",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_24.2.0_a32.tzst",
         "file_md5": "39485b41dafea094894c8b41257cd626",
         "file_name": "turnip_24.2.0_a32.tzst",
@@ -2821,6 +2830,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 313
+    "total": 314
   }
 }

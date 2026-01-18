@@ -72,6 +72,16 @@
       "file_name": "Turnip_Gen8_V19.tzst",
       "file_md5": "f72e2f1a0f9f26596901eafd38f6280c",
       "file_size": "3325394"
+    },
+    {
+      "id": 996,
+      "name": "Turnip_Gen8_V20",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "Turnip_Gen8_V20.tzst",
+      "file_md5": "b3e627c84bd1f447cb58723e020c7eb6",
+      "file_size": "3331097"
     }
   ]
 }
