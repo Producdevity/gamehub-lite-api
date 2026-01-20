@@ -436,6 +436,24 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V21.tzst",
+        "file_md5": "baf09224ec5babd106cdc53be0541839",
+        "file_name": "Turnip_Gen8_V21.tzst",
+        "file_size": "3328971",
+        "name": "Turnip_Gen8_V21",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V22.tzst",
+        "file_md5": "de6e94ef746d9ca588c4908e9d81b3c4",
+        "file_name": "Turnip_Gen8_V22.tzst",
+        "file_size": "3327760",
+        "name": "Turnip_Gen8_V22",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_24.2.0_a32.tzst",
         "file_md5": "39485b41dafea094894c8b41257cd626",
         "file_name": "turnip_24.2.0_a32.tzst",
@@ -2839,6 +2857,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 315
+    "total": 317
   }
 }

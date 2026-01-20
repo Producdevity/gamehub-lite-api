@@ -5,8 +5,36 @@
     "type": 2,
     "type_name": "drivers",
     "display_name": "GPU Drivers",
-    "total": 92,
+    "total": 94,
     "components": [
+      {
+        "display_name": "Turnip_Gen8_V22",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V22.tzst",
+        "file_md5": "de6e94ef746d9ca588c4908e9d81b3c4",
+        "file_name": "Turnip_Gen8_V22.tzst",
+        "file_size": "3327760",
+        "id": 999,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Turnip_Gen8_V22",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "Turnip_Gen8_V21",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V21.tzst",
+        "file_md5": "baf09224ec5babd106cdc53be0541839",
+        "file_name": "Turnip_Gen8_V21.tzst",
+        "file_size": "3328971",
+        "id": 998,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Turnip_Gen8_V21",
+        "type": 2,
+        "version": "1.0.0",
+        "version_code": 1
+      },
       {
         "display_name": "a8xx-gen8-V20.5",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/a8xx-gen8-V20.5.tzst",

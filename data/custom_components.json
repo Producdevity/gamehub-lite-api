@@ -92,6 +92,36 @@
       "file_name": "a8xx-gen8-V20.5.tzst",
       "file_md5": "4f971029be22e0fca6892d909e70220e",
       "file_size": "2562750"
+    },
+    {
+      "id": 998,
+      "name": "Turnip_Gen8_V21",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "Turnip_Gen8_V21.tzst",
+      "file_md5": "baf09224ec5babd106cdc53be0541839",
+      "file_size": "3328971"
+    },
+    {
+      "id": 999,
+      "name": "Turnip_Gen8_V22",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "Turnip_Gen8_V22.tzst",
+      "file_md5": "de6e94ef746d9ca588c4908e9d81b3c4",
+      "file_size": "3327760"
+    },
+    {
+      "id": 1000,
+      "name": "a8xx-gen8-V21",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "a8xx-gen8-V21.tzst",
+      "file_md5": "d424df9034254600c3975d0bf0e907bb",
+      "file_size": "2594106"
     }
   ]
 }
