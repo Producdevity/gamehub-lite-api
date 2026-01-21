@@ -122,6 +122,16 @@
       "file_name": "a8xx-gen8-V21.tzst",
       "file_md5": "d424df9034254600c3975d0bf0e907bb",
       "file_size": "2594106"
+    },
+    {
+      "id": 1001,
+      "name": "Turnip_v26.0.0_M1",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "Turnip_v26.0.0_M1.tzst",
+      "file_md5": "18abdc985fa77f264f94cfb7646acca5",
+      "file_size": "3063101"
     }
   ]
 }
