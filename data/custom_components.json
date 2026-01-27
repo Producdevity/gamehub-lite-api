@@ -132,6 +132,16 @@
       "file_name": "Turnip_v26.0.0_M1.tzst",
       "file_md5": "18abdc985fa77f264f94cfb7646acca5",
       "file_size": "3063101"
+    },
+    {
+      "id": 1002,
+      "name": "Turnip_Gen8_V23",
+      "type": 2,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "Turnip_Gen8_V23.tzst",
+      "file_md5": "587c437226338b6cad60e251d13d3af0",
+      "file_size": "3100163"
     }
   ]
 }
