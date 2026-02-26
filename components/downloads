@@ -364,6 +364,42 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mesa-turnip-flushall-V26.1.0-git.tzst",
+        "file_md5": "68c1d81066284d7bf9dbe60af48eb014",
+        "file_name": "mesa-turnip-flushall-V26.1.0-git.tzst",
+        "file_size": "2303857",
+        "name": "mesa-turnip-flushall-V26.1.0-git",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mesa-turnip-main-flushall-V26.1.0-git-hotfix.tzst",
+        "file_md5": "b75d423dd91255bdb78e160881807282",
+        "file_name": "mesa-turnip-main-flushall-V26.1.0-git-hotfix.tzst",
+        "file_size": "2299911",
+        "name": "mesa-turnip-main-flushall-V26.1.0-git-hotfix",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mesa-turnip-main-noflushall-V26.1.0-git-hotfix.tzst",
+        "file_md5": "6dc91f28394ff2b80e0c951b7f1b4893",
+        "file_name": "mesa-turnip-main-noflushall-V26.1.0-git-hotfix.tzst",
+        "file_size": "2300998",
+        "name": "mesa-turnip-main-noflushall-V26.1.0-git-hotfix",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/mesa-turnip-main-V26.1.0-git.tzst",
+        "file_md5": "5c7bbac6646c6a06106ceb4766f8099e",
+        "file_name": "mesa-turnip-main-V26.1.0-git.tzst",
+        "file_size": "2302921",
+        "name": "mesa-turnip-main-V26.1.0-git",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/qcom-800.64.tzst",
         "file_md5": "bed23f4587576f40ddc2a9a4f3f9b500",
         "file_name": "qcom-800.64.tzst",
@@ -468,6 +504,24 @@
         "file_name": "Turnip_Gen8_V23.tzst",
         "file_size": "3100163",
         "name": "Turnip_Gen8_V23",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V24.tzst",
+        "file_md5": "f84e5f917a6c9337439cf9c334ccd67b",
+        "file_name": "Turnip_Gen8_V24.tzst",
+        "file_size": "3119705",
+        "name": "Turnip_Gen8_V24",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V25.tzst",
+        "file_md5": "dad66215792a1e64eea9f3fdb0aebe0f",
+        "file_name": "Turnip_Gen8_V25.tzst",
+        "file_size": "3123993",
+        "name": "Turnip_Gen8_V25",
         "type": 2,
         "version": "1.0.0"
       },
@@ -895,6 +949,15 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_Autotuner.tzst",
+        "file_md5": "21539eefd1b8685c875f0dee8f9fcdae",
+        "file_name": "Turnip_v26.0.0_Autotuner.tzst",
+        "file_size": "3133688",
+        "name": "Turnip_v26.0.0_Autotuner",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_M1.tzst",
         "file_md5": "18abdc985fa77f264f94cfb7646acca5",
         "file_name": "Turnip_v26.0.0_M1.tzst",
@@ -1053,6 +1116,42 @@
         "file_name": "Turnip_v26.0.0_R8_Sysmem.tzst",
         "file_size": "3237690",
         "name": "Turnip_v26.0.0_R8_Sysmem",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0.tzst",
+        "file_md5": "23b31992b4ca3f49fc286c8c4c6ad1b7",
+        "file_name": "Turnip_v26.1.0.tzst",
+        "file_size": "3108412",
+        "name": "Turnip_v26.1.0",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_a6xx_fix.tzst",
+        "file_md5": "9ba59607f5ef174299dab7917853ae49",
+        "file_name": "Turnip_v26.1.0_a6xx_fix.tzst",
+        "file_size": "3107704",
+        "name": "Turnip_v26.1.0_a6xx_fix",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_R2.tzst",
+        "file_md5": "b29cd6795c2d53d356aaa7d0dd935a32",
+        "file_name": "Turnip_v26.1.0_R2.tzst",
+        "file_size": "3118002",
+        "name": "Turnip_v26.1.0_R2",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_R3.tzst",
+        "file_md5": "6b9ab9bf7d144adbe181b0d60581c306",
+        "file_name": "Turnip_v26.1.0_R3.tzst",
+        "file_size": "3118280",
+        "name": "Turnip_v26.1.0_R3",
         "type": 2,
         "version": "1.0.0"
       },
@@ -2884,6 +2983,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 320
+    "total": 331
   }
 }
