@@ -1156,6 +1156,42 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_R4.tzst",
+        "file_md5": "b21ad144bf44a1783433dc2201ee6849",
+        "file_name": "Turnip_v26.1.0_R4.tzst",
+        "file_size": "3076323",
+        "name": "Turnip_v26.1.0_R4",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/v849.tzst",
+        "file_md5": "f07886cb8fdf8e12ffca385366d59e05",
+        "file_name": "v849.tzst",
+        "file_size": "3158401",
+        "name": "v849",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/v849_a6xx.tzst",
+        "file_md5": "aac389cef11dfbf25786290d1ac18dc0",
+        "file_name": "v849_a6xx.tzst",
+        "file_size": "3159304",
+        "name": "v849_a6xx",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/v863.1.tzst",
+        "file_md5": "46f379a3be747348e27dd7db24a62399",
+        "file_name": "v863.1.tzst",
+        "file_size": "36782",
+        "name": "v863.1",
+        "type": 2,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dxvk-0.96.tzst",
         "file_md5": "33983fdd3da95bf015deda2c76895820",
         "file_name": "dxvk-0.96.tzst",
@@ -2983,6 +3019,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 331
+    "total": 335
   }
 }
