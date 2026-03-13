@@ -4,6 +4,20 @@
   "data": {
     "list": [
       {
+        "display_name": "FEXCore-2603.tzst",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/FEXCore-2603.tzst",
+        "file_md5": "31f991a5cb68566a04f6325aefacd83b",
+        "file_name": "FEXCore-2603.tzst",
+        "file_size": "2301090",
+        "id": 1018,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "FEXCore-2603.tzst",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Fex-20260103.tzst",
         "file_md5": "ca83779fa610be7ba0f19e6b305a0e8b",
@@ -4694,7 +4708,7 @@
         "version_code": 1
       }
     ],
-    "total": 335
+    "total": 336
   },
-  "time": "1773416241"
+  "time": "1773429481"
 }

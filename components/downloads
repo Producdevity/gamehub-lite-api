@@ -184,6 +184,15 @@
         "version": "1.0.0"
       },
       {
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/FEXCore-2603.tzst",
+        "file_md5": "31f991a5cb68566a04f6325aefacd83b",
+        "file_name": "FEXCore-2603.tzst",
+        "file_size": "2301090",
+        "name": "FEXCore-2603.tzst",
+        "type": 1,
+        "version": "1.0.0"
+      },
+      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/8Elite2-842.6.tzst",
         "file_md5": "d2c18569d828ba8b7c66804aa8be2d54",
         "file_name": "8Elite2-842.6.tzst",
@@ -3019,6 +3028,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 335
+    "total": 336
   }
 }

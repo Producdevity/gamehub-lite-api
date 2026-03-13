@@ -292,6 +292,16 @@
       "file_name": "Turnip_v26.1.0_R4.tzst",
       "file_md5": "b21ad144bf44a1783433dc2201ee6849",
       "file_size": "3076323"
+    },
+    {
+      "id": 1018,
+      "name": "FEXCore-2603.tzst",
+      "type": 1,
+      "version": "1.0.0",
+      "version_code": 1,
+      "file_name": "FEXCore-2603.tzst",
+      "file_md5": "31f991a5cb68566a04f6325aefacd83b",
+      "file_size": "2301090"
     }
   ]
 }
