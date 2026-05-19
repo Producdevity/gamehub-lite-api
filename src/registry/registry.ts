@@ -8,6 +8,7 @@ import type {
   BuildConfig,
 } from '../types/index.js';
 import { COMPONENT_TYPE_META } from '../types/index.js';
+import { toGitHubAssetName } from '../utils/github-assets.js';
 
 /**
  * Info about a component's original CDN URL (for downloading missing files)
@@ -15,9 +16,9 @@ import { COMPONENT_TYPE_META } from '../types/index.js';
 export interface OriginalComponentInfo {
   id: number;
   name: string;
-  originalFileName: string; // Original file_name from XML (may have spaces)
-  githubFileName: string; // GitHub-compatible file_name (spaces replaced with dots)
-  originalDownloadUrl: string; // Original CDN URL from XML
+  originalFileName: string;
+  githubFileName: string;
+  originalDownloadUrl: string;
 }
 
 /**
@@ -45,14 +46,6 @@ export class ComponentRegistry {
   }
 
   /**
-   * Convert file name to GitHub-compatible format (spaces -> dots)
-   * GitHub release assets replace spaces with dots automatically
-   */
-  private toGitHubFileName(fileName: string): string {
-    return fileName.replace(/ /g, '.');
-  }
-
-  /**
    * Add components to a registry
    */
   addComponents(components: Component[]): void {
@@ -76,7 +69,7 @@ export class ComponentRegistry {
 
     // Store original info for missing file detection
     const originalFileName = component.file_name;
-    const githubFileName = this.toGitHubFileName(originalFileName);
+    const githubFileName = toGitHubAssetName(originalFileName);
 
     this.originalComponentInfo.set(component.id, {
       id: component.id,
@@ -86,7 +79,6 @@ export class ComponentRegistry {
       originalDownloadUrl: component.download_url,
     });
 
-    // Rewrite download URL to GitHub CDN with a GitHub-compatible filename
     const rewrittenComponent: Component = {
       ...component,
       file_name: githubFileName,

@@ -9,6 +9,12 @@
     "sync": "tsc && node dist/index.js sync",
     "validate": "tsc && node dist/index.js validate",
     "diff": "tsc && node dist/index.js diff",
+    "import-gamehub-xml": "tsc && node dist/scripts/import-gamehub-xml.js",
+    "release-assets:check": "tsc && node dist/scripts/release-assets.js check",
+    "release-assets:check-deep": "tsc && node dist/scripts/release-assets.js check --download-existing",
+    "release-assets:upload-new": "tsc && node dist/scripts/release-assets.js upload-new",
+    "release-assets:replace-changed": "tsc && node dist/scripts/release-assets.js replace-changed",
+    "release-assets:replace-current": "tsc && node dist/scripts/release-assets.js replace-current",
     "convert-drivers": "tsc && node dist/scripts/convert-drivers.js",
     "compile": "tsc",
     "dev": "tsc --watch"

@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 
 import { parseXmlFile } from './parsers/xml-parser.js';
 import { parseCustomComponents } from './parsers/custom-parser.js';
@@ -17,6 +17,7 @@ import {
   generateExecuteScript,
 } from './generators/index.js';
 import { formatJson } from './utils/json.js';
+import { toGitHubAssetKey } from './utils/github-assets.js';
 import type { BuildConfig, Container, Imagefs, Defaults, ExecutionConfig } from './types/index.js';
 import { DEFAULT_CONFIG } from './types/index.js';
 
@@ -33,15 +34,42 @@ function loadJson<T>(path: string): T {
  */
 function getGitHubReleaseAssets(repo: string, release: string): Set<string> {
   try {
-    const output = execSync(
-      `gh release view "${release}" --repo "${repo}" --json assets --jq '.assets[].name'`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+    const env: NodeJS.ProcessEnv = {
+      ...process.env,
+      NO_COLOR: '1',
+      CLICOLOR: '0',
+      FORCE_COLOR: '0',
+      TERM: 'dumb',
+    };
+    delete env.GH_FORCE_TTY;
+    delete env.CLICOLOR_FORCE;
+
+    const releaseOutput = execFileSync(
+      'gh',
+      ['api', `repos/${repo}/releases/tags/${release}`],
+      { encoding: 'utf-8', env, stdio: ['pipe', 'pipe', 'pipe'] }
     );
-    return new Set(output.trim().split('\n').filter(Boolean));
+    const releaseInfo = JSON.parse(stripAnsi(releaseOutput)) as { id: number };
+    const assetsOutput = execFileSync(
+      'gh',
+      [
+        'api',
+        '--paginate',
+        '--slurp',
+        `repos/${repo}/releases/${releaseInfo.id}/assets?per_page=100`,
+      ],
+      { encoding: 'utf-8', env, maxBuffer: 100 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe'] }
+    );
+    const pages = JSON.parse(stripAnsi(assetsOutput)) as Array<Array<{ name: string }>>;
+    return new Set(pages.flatMap((page) => page.map((asset) => toGitHubAssetKey(asset.name))));
   } catch {
     console.warn('   Warning: Could not fetch GitHub release assets (gh CLI not available or not authenticated)');
     return new Set();
   }
+}
+
+function stripAnsi(value: string): string {
+  return value.replace(/\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g, '');
 }
 
 /**
@@ -61,7 +89,7 @@ function checkMissingFiles(
   const missing: OriginalComponentInfo[] = [];
 
   for (const info of allInfo) {
-    if (!githubAssets.has(info.githubFileName)) {
+    if (!githubAssets.has(toGitHubAssetKey(info.githubFileName))) {
       missing.push(info);
     }
   }
@@ -222,22 +250,16 @@ async function build(config: BuildConfig): Promise<void> {
     console.log(`   ✓ All ${total} component files exist on GitHub release\n`);
   } else {
     console.log(`\n   ⚠ MISSING FILES: ${missing.length} of ${total} files not found on GitHub!\n`);
-    console.log('   These files must be uploaded to GitHub release before deployment.\n');
-    console.log('   Download commands:');
-    console.log('   ```bash');
-    console.log('   mkdir -p /tmp/missing_components && cd /tmp/missing_components\n');
-
+    console.log('   Upload these before deployment.\n');
+    console.log('   Missing release assets:');
     for (const info of missing) {
-      const encodedUrl = info.originalDownloadUrl.replace(/ /g, '%20');
-      console.log(`   # ${info.name} (ID: ${info.id})`);
-      console.log(`   curl -L -o "${info.githubFileName}" "${encodedUrl}"\n`);
+      console.log(`   - ${info.githubFileName} (${info.name}, ID: ${info.id})`);
     }
-
-    console.log('   ```\n');
-    console.log('   Upload command:');
+    console.log('\n   Run:');
     console.log('   ```bash');
-    const fileList = missing.map((m) => `"${m.githubFileName}"`).join(' ');
-    console.log(`   gh release upload ${config.githubRelease} ${fileList} --repo ${config.githubRepo}`);
+    console.log('   npm run import-gamehub-xml -- --download-assets');
+    console.log('   npm run release-assets:upload-new');
+    console.log('   npm run build');
     console.log('   ```\n');
 
     // Exit with error to prevent deployment with missing files
