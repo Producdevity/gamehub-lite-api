@@ -1,12 +1,12 @@
 # GameHub Lite API
 
-Privacy-respecting static JSON API for the GameHub Android app. This repository hosts all configuration files, component manifests, and API responses.
+Static JSON API for the GameHub Lite app. This repository hosts configuration files, component manifests, and API responses.
 
 **GameHub Lite App/Patch Repository:** `https://github.com/Producdevity/gamehub-lite`
 
 ## Build System
 
-This repository uses a TypeScript build system that automatically generates all API endpoint files from:
+The TypeScript build generates API endpoint files from:
 - `sp_winemu_all_components12.xml` - Official GameHub component data
 - `data/custom_components.json` - Custom components not in the XML
 - `data/*.json` - Static configuration files
@@ -50,11 +50,7 @@ The build system generates 16 API endpoint files:
 
 ### Missing Files Check
 
-The build system automatically checks if all component files exist on the GitHub release and will:
-1. Report any missing files
-2. Provide download commands from the official CDN
-3. Provide upload commands for GitHub
-4. **Fail the build** if files are missing (prevents broken deployments)
+`npm run build` checks the `Components` release. Missing assets are listed by release filename and the build exits non-zero.
 
 ## Directory Structure
 
@@ -131,23 +127,51 @@ Add components that aren't in the official XML:
 | 6 | Libraries | Windows DLLs for Wine |
 | 7 | Steam | Steam client components |
 
-## GitHub Compatibility
+## GitHub Asset Names
 
-GitHub release assets automatically replace spaces with dots in file names. The build system handles this by:
-1. Storing original file names from XML
-2. Converting spaces to dots for GitHub URLs
-3. Checking files exist on GitHub with the converted names
+GitHub normalizes spaces and some punctuation in release asset names. The build uses the same names for URLs and release checks.
 
-Example: `Torchlight II.tzst` → `Torchlight.II.tzst`
+- `Torchlight II.tzst` -> `Torchlight.II.tzst`
+- `DeadSpace(2023).tzst` -> `DeadSpace.2023.tzst`
 
 ## Adding New Components
 
-### From Updated XML
+### From GameHub SharedPreferences XML
 
-1. Replace `data/sp_winemu_all_components12.xml` with the new version
-2. Run `npm run build`
-3. Review the diff and commit changes
-4. Upload any missing files reported by the build
+Install and run the official GameHub app, then copy the XML files from its app-data `shared_prefs/` directory. Depending on device/access method this may be under `/data/data/<gamehub-package>/shared_prefs/`, `/data/user/0/<gamehub-package>/shared_prefs/`, or an exposed path such as `/storage/<storage-volume>/data/shared_prefs/`.
+
+1. Put the XML files in ignored `tmp/`:
+   - `tmp/sp_winemu_all_components12.xml`
+   - `tmp/sp_winemu_all_imageFs.xml`
+   - `tmp/sp_winemu_all_containers.xml`
+2. Import the XML:
+   ```bash
+   npm run import-gamehub-xml
+   ```
+   This writes tracked data files and `.tmp_components/gamehub-xml/asset-manifest.json`. Types `10`, `12`, `13`, `94`, and `95` are settings records, so they are skipped.
+3. Download release assets referenced by changed or new records:
+   ```bash
+   npm run import-gamehub-xml -- --download-assets
+   ```
+   Files are written to ignored `.tmp_components/gamehub-xml/`. Do not upload `asset-manifest.json`.
+4. Compare local assets with the `Components` release:
+   ```bash
+   npm run release-assets:check
+   ```
+5. Upload assets missing from the release:
+   ```bash
+   npm run release-assets:upload-new
+   ```
+6. Replace changed same-name assets only when you intend to overwrite the release copy:
+   ```bash
+   npm run release-assets:replace-changed
+   ```
+   To replace only selected files, leave only those files in `.tmp_components/gamehub-xml/` and run:
+   ```bash
+   npm run release-assets:replace-current
+   ```
+7. Run `npm run build`
+8. Review the diff and commit changes
 
 ### Custom Components
 
@@ -176,9 +200,4 @@ The build system rewrites all download URLs to point to GitHub.
 
 ## Privacy
 
-This repository contains only:
-- Public component manifests
-- Open source configuration data
-- CDN download links
-
-No user data, analytics, or tracking.
+This repository contains public manifests, configuration data, and CDN links. It does not contain user data, analytics, or tracking.
