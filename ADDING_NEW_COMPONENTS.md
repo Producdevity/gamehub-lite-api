@@ -1,14 +1,12 @@
-# Adding New Components to GameHub Lite API
-
-This guide explains how to add new components (drivers, libraries, etc.) to the GameHub Lite API.
+# Adding Components
 
 ## Overview
 
-The GameHub Lite API uses a TypeScript build system that automatically generates all API endpoint files from:
+The TypeScript build generates API endpoint files from:
 - `data/sp_winemu_all_components12.xml` - Official GameHub component data
 - `data/custom_components.json` - Custom components not in the XML
 
-**You no longer need to manually edit multiple JSON files.** The build system handles all file generation and validation.
+Edit source data, then run the build. Generated endpoint files should not be edited by hand.
 
 ## Component Types
 
@@ -22,51 +20,92 @@ The GameHub Lite API uses a TypeScript build system that automatically generates
 | 6 | Libraries | Windows DLLs for Wine |
 | 7 | Steam | Steam client components |
 
-## Method 1: Updating from New XML (Recommended)
+## Method 1: Updating from GameHub SharedPreferences XML
 
-When you receive an updated `sp_winemu_all_components12.xml` file:
+Install and run the official GameHub app, then copy the XML files from its app-data `shared_prefs/` directory. The prefix depends on device and access method; common paths are `/data/data/<gamehub-package>/shared_prefs/`, `/data/user/0/<gamehub-package>/shared_prefs/`, or an exposed path such as `/storage/<storage-volume>/data/shared_prefs/`.
 
-### Step 1: Replace the XML File
+### Step 1: Copy XML Files
+
+Put these files in ignored `tmp/`:
+- `tmp/sp_winemu_all_components12.xml`
+- `tmp/sp_winemu_all_imageFs.xml`
+- `tmp/sp_winemu_all_containers.xml`
+
+### Step 2: Import
 
 ```bash
-cp ./sp_winemu_all_components12.xml ./data/sp_winemu_all_components12.xml
+npm run import-gamehub-xml
 ```
 
-### Step 2: Run the Build
+Import writes:
+- `data/sp_winemu_all_components12.xml`
+- `data/imagefs.json`
+- `data/containers.json`
+- `.tmp_components/gamehub-xml/asset-manifest.json`
+
+Types `10`, `12`, `13`, `94`, and `95` are settings records, not downloadable components.
+
+### Step 3: Download Assets
+
+```bash
+npm run import-gamehub-xml -- --download-assets
+```
+
+Downloaded files are written to `.tmp_components/gamehub-xml/`. The importer checks MD5 hashes, known file sizes, and local file type.
+
+`asset-manifest.json` is a local checklist. Do not upload it to GitHub Releases.
+
+### Step 4: Check Release Asset Status
+
+Compare local files with the `Components` release:
+
+```bash
+npm run release-assets:check
+```
+
+If hashes are unavailable for existing release assets:
+
+```bash
+npm run release-assets:check-deep
+```
+
+### Step 5: Upload Assets
+
+Upload assets missing from the release:
+
+```bash
+npm run release-assets:upload-new
+```
+
+Replace changed same-name assets only when you intend to overwrite the release copy:
+
+```bash
+npm run release-assets:replace-changed
+```
+
+To replace only selected files, leave only those files in `.tmp_components/gamehub-xml/` and run:
+
+```bash
+npm run release-assets:replace-current
+```
+
+### Step 6: Run the Build
 
 ```bash
 npm run build
 ```
 
-The build system will:
+Build:
 1. Parse all components from the XML
 2. Merge with any custom components
 3. Generate all 16 API endpoint files
 4. Validate all data
 5. Check if all component files exist on GitHub release
-6. Report any missing files with download/upload instructions
+6. Fails if release assets are still missing
 
-### Step 3: Handle Missing Files
+### Step 7: Verify and Commit
 
-If the build reports missing files, it will provide:
-
-1. **Download commands** to fetch files from the original CDN:
-   ```bash
-   mkdir -p /tmp/missing_components && cd /tmp/missing_components
-
-   # Example download command for each missing file:
-   curl -L -o "component_name.tzst" "https://original-cdn-url/component.tzst"
-   ```
-
-2. **Upload command** to add files to GitHub release:
-   ```bash
-   # replace Producdevity/gamehub-lite-api with your fork
-   gh release upload Components "file1.tzst" "file2.tzst" --repo Producdevity/gamehub-lite-api
-   ```
-
-### Step 4: Verify and Commit
-
-After uploading missing files, run the build again:
+If the build reports missing files, run `npm run release-assets:check`, upload the missing assets, then build again.
 
 ```bash
 npm run build
@@ -76,7 +115,7 @@ If all files exist, commit the changes:
 
 ```bash
 git add .
-git commit -m "Update components from new XML"
+git commit -m "Update components from GameHub XML"
 git push
 ```
 
@@ -131,14 +170,10 @@ npm run build
 
 ## GitHub Filename Compatibility
 
-**Important:** GitHub automatically replaces spaces with dots in release asset filenames.
+GitHub normalizes spaces and some punctuation in release asset names. The build uses the same names for URLs and release checks.
 
-The build system handles this automatically:
-- XML file name: `Torchlight II.tzst`
-- GitHub file name: `Torchlight.II.tzst`
-- Generated download URL: `https://github.com/.../Torchlight.II.tzst`
-
-When uploading files with spaces, GitHub will rename them. The build system accounts for this when checking for missing files.
+- `Torchlight II.tzst` -> `Torchlight.II.tzst`
+- `DeadSpace(2023).tzst` -> `DeadSpace.2023.tzst`
 
 ## Updating Default Components
 
@@ -207,7 +242,7 @@ The build system generates these 16 files:
 
 The build intentionally fails if component files don't exist on GitHub. This prevents deploying broken configurations.
 
-**Solution:** Upload the missing files using the provided commands, then rebuild.
+Upload the missing files, then rebuild.
 
 ### Component is not appearing in app
 
@@ -224,8 +259,8 @@ Ensure the MD5 hash is exactly 32 lowercase hexadecimal characters.
 
 In `custom_components.json`, `file_size` must be a string of the file size in bytes:
 ```json
-"file_size": "41192642"  // Correct
-"file_size": 41192642    // Wrong - will cause validation error
+"file_size": "41192642"  // ok
+"file_size": 41192642    // invalid
 ```
 
 ## Quick Reference
@@ -237,13 +272,22 @@ npm run build
 # Validate only (no file generation)
 npm run validate
 
-# Check GitHub release assets manually
-gh release view Components --repo Producdevity/gamehub-lite-api --json assets
+# Check local GameHub XML assets against the release
+npm run release-assets:check
 
-# Upload files to release
-gh release upload Components file1.tzst file2.tzst --repo Producdevity/gamehub-lite-api
+# Deep check when release hashes are unavailable
+npm run release-assets:check-deep
+
+# Upload files missing from the release
+npm run release-assets:upload-new
+
+# Replace changed same-name release assets
+npm run release-assets:replace-changed
+
+# Replace only the files currently present in .tmp_components/gamehub-xml/
+npm run release-assets:replace-current
 ```
 
 ---
 
-**Last Updated:** December 2025
+**Last Updated:** May 2026
