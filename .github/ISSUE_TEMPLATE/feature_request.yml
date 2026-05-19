@@ -1,0 +1,73 @@
+name: Feature request
+description: Request a change or new capability.
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Required checklist
+      options:
+        - label: I searched existing GitHub issues and did not find this request.
+          required: true
+        - label: I checked whether this can already be done with existing settings or components.
+          required: true
+        - label: I explained the use case, not only the proposed implementation.
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature category
+      options:
+        - Game compatibility
+        - Device compatibility
+        - Component or driver
+        - Container or Wine settings
+        - Downloads or release assets
+        - API or data
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case
+      description: What problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the behavior, setting, component, or data change you want.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives tried
+      description: What workarounds or existing settings did you try?
+    validations:
+      required: true
+
+  - type: input
+    id: affected-devices
+    attributes:
+      label: Affected devices or SoCs
+      description: Required for hardware-specific requests.
+      placeholder: Snapdragon 8 Gen 2, Snapdragon 8 Elite, Mali G715, etc.
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add screenshots, links, logs, examples, or related projects.
+    validations:
+      required: false

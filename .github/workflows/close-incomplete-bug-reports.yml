@@ -1,0 +1,85 @@
+name: Close incomplete bug reports
+
+on:
+  issues:
+    types: [opened, edited, labeled, reopened]
+
+permissions:
+  issues: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (issue.state !== 'open') return;
+            if (!issue.labels.some((label) => label.name === 'bug')) return;
+
+            const body = issue.body || '';
+            const checklist = [
+              'I searched existing GitHub issues and did not find this exact bug.',
+              'I searched online and did not find a fix for this exact bug.',
+              'I asked in the EmuReady Discord GameHub Lite channels and could not solve it there.',
+              'I added enough steps to reproduce the exact issue.',
+              'I understand that incomplete bug reports may be closed.',
+            ];
+            const requiredSections = [
+              'Device',
+              'SoC',
+              'Android version',
+              'GameHub Lite version and package',
+              'Game or component',
+              'Issue area',
+              'Summary',
+              'Steps to reproduce',
+              'Expected result',
+              'Actual result',
+              'Container settings',
+              'Logs',
+              'Logs and troubleshooting notes',
+            ];
+
+            const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const checked = (label) =>
+              new RegExp(`- \\[[xX]\\] ${escapeRegExp(label)}(?:\\r?\\n|$)`).test(body);
+            const sectionValue = (heading) => {
+              const match = body.match(
+                new RegExp(`^### ${escapeRegExp(heading)}\\s*\\n+([\\s\\S]*?)(?=\\n### |\\n*$)`, 'm')
+              );
+              return (match?.[1] || '').trim();
+            };
+
+            const missingChecks = checklist.filter((label) => !checked(label));
+            const missingSections = requiredSections.filter((heading) => {
+              const value = sectionValue(heading);
+              return !value || value === '_No response_';
+            });
+
+            if (missingChecks.length === 0 && missingSections.length === 0) return;
+
+            const marker = '<!-- incomplete-bug-report -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+            });
+
+            if (!comments.some((comment) => comment.body?.includes(marker))) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `${marker}\nThis bug report is missing required information from the bug report form. Please open a new bug report with the required device, reproduction, container, and log details.`,
+              });
+            }
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              state: 'closed',
+              state_reason: 'not_planned',
+            });

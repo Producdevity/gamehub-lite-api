@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: EmuReady Discord
+    url: https://discord.com/channels/1380826875961540648/1426179265606455428
+    about: Ask in the GameHub Lite channels before opening a bug report.

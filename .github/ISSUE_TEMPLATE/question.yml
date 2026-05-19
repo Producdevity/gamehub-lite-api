@@ -1,0 +1,86 @@
+name: Question
+description: Ask a support or usage question.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for questions that are not confirmed bugs.
+
+        Troubleshooting and logs: https://github.com/Producdevity/gamehub-lite-api/blob/master/docs/troubleshooting.md
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Required checklist
+      options:
+        - label: I searched existing GitHub issues and did not find an answer.
+          required: true
+        - label: I checked the docs and release notes.
+          required: true
+        - label: I asked in the EmuReady Discord GameHub Lite channels or my question cannot be answered there.
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Question category
+      options:
+        - Installation
+        - Downloads or components
+        - Game setup
+        - Container settings
+        - Device compatibility
+        - Logs or troubleshooting
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      placeholder: Samsung Galaxy S24 Ultra
+    validations:
+      required: true
+
+  - type: input
+    id: soc
+    attributes:
+      label: SoC
+      placeholder: Snapdragon 8 Elite
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: GameHub Lite version and package
+      placeholder: v1.2.3, package com.example.gamehublite
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Explain what you are trying to do and where you are stuck.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you already tried
+      description: Include settings, docs, Discord suggestions, or fixes you already tested.
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Additional details
+      description: Add logs, screenshots, links, or full context if relevant.
+    validations:
+      required: false

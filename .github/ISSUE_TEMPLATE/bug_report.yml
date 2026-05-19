@@ -1,0 +1,175 @@
+name: Bug report
+description: Report a reproducible GameHub Lite bug.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for reproducible bugs. Bug reports missing required device, log, or reproduction details may be closed.
+
+        Log instructions: https://github.com/Producdevity/gamehub-lite-api/blob/master/docs/troubleshooting.md
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Required checklist
+      description: All boxes are required.
+      options:
+        - label: I searched existing GitHub issues and did not find this exact bug.
+          required: true
+        - label: I searched online and did not find a fix for this exact bug.
+          required: true
+        - label: I asked in the EmuReady Discord GameHub Lite channels and could not solve it there.
+          required: true
+        - label: I added enough steps to reproduce the exact issue.
+          required: true
+        - label: I understand that incomplete bug reports may be closed.
+          required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      description: Exact device model.
+      placeholder: Samsung Galaxy S24 Ultra
+    validations:
+      required: true
+
+  - type: input
+    id: soc
+    attributes:
+      label: SoC
+      description: Chipset used by the device.
+      placeholder: Snapdragon 8 Elite
+    validations:
+      required: true
+
+  - type: input
+    id: android-version
+    attributes:
+      label: Android version
+      placeholder: Android 15 / One UI 7
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: GameHub Lite version and package
+      description: Include the GameHub Lite build/version and package name. Benchmark variants may use different package names.
+      placeholder: v1.2.3, package com.example.gamehublite
+    validations:
+      required: true
+
+  - type: input
+    id: game
+    attributes:
+      label: Game or component
+      placeholder: Base install, Steam, Fallout New Vegas, Turnip driver, etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Issue area
+      options:
+        - Download or install
+        - Game launch
+        - Game runtime
+        - Controls or input
+        - Graphics or driver
+        - Audio
+        - Container or Wine settings
+        - API or component list
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the bug and the exact error text.
+      placeholder: Base fails to install with the error "Base failed to install. Retry".
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List every step needed to trigger the issue.
+      placeholder: |
+        1. Open GameHub Lite
+        2. Select ...
+        3. Tap ...
+        4. Error appears
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include screenshots or exact error text when possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: container-settings
+    attributes:
+      label: Container settings
+      description: Include resolution, DXVK/VKD3D, Box64/FEX, driver, Wine version, preset, and anything else you changed.
+      placeholder: |
+        Resolution:
+        Driver:
+        DXVK:
+        VKD3D:
+        Box64/FEX:
+        Wine/container:
+        Other changes:
+    validations:
+      required: true
+
+  - type: dropdown
+    id: logs-status
+    attributes:
+      label: Logs
+      description: Attach logs when relevant. See docs/troubleshooting.md.
+      options:
+        - I attached both app and wine logs.
+        - Logs are relevant but I cannot access them, and I explained why below.
+        - Logs are not relevant for this report, and I explained why below.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and troubleshooting notes
+      description: Drag log files here, paste relevant excerpts, or explain why logs are unavailable/not relevant.
+      placeholder: |
+        Attach:
+        - util_YYYY_MM_DD_<package-name>.txt
+        - util_YYYY_MM_DD_<package-name>_wine.txt
+
+        Also list what you already tried.
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional information
+      description: Add screenshots, videos, links, or other context.
+    validations:
+      required: false
