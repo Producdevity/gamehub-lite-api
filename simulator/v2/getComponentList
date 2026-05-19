@@ -5,7 +5,7 @@
     "list": [
       {
         "blurb": "",
-        "display_name": "FEXCore-2603.tzst",
+        "display_name": "FEXCore-2603",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/FEXCore-2603.tzst",
         "file_md5": "31f991a5cb68566a04f6325aefacd83b",
         "file_name": "FEXCore-2603.tzst",
@@ -13,7 +13,67 @@
         "gpu_range": "",
         "id": 1018,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
-        "name": "FEXCore-2603.tzst",
+        "name": "FEXCore-2603",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "blurb": "",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Fex_20260509.tzst",
+        "file_md5": "413f44586f2fccaf93a2792f6198495d",
+        "file_name": "Fex_20260509.tzst",
+        "file_size": "1675639",
+        "gpu_range": "",
+        "id": 436,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex_20260509",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "blurb": "",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Fex_20260428.tzst",
+        "file_md5": "6c73748ec3b5ef321604bb758b1c5afb",
+        "file_name": "Fex_20260428.tzst",
+        "file_size": "2202281",
+        "gpu_range": "",
+        "id": 429,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex_20260428",
+        "type": 1,
+        "version": "1.0.1",
+        "version_code": 2
+      },
+      {
+        "blurb": "",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Box64-0.4.1-2.tzst",
+        "file_md5": "cd7fe18882bcc8d5e37a7893288f8703",
+        "file_name": "Box64-0.4.1-2.tzst",
+        "file_size": "4210617",
+        "gpu_range": "",
+        "id": 419,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Box64-0.4.1-2",
+        "type": 1,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "blurb": "",
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/fex-20260321.tzst",
+        "file_md5": "e41acf1248a8e48411ce2b7f8c73dc65",
+        "file_name": "fex-20260321.tzst",
+        "file_size": "10922243",
+        "gpu_range": "",
+        "id": 418,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "Fex-20260321",
         "type": 1,
         "version": "1.0.0",
         "version_code": 1
@@ -319,9 +379,9 @@
         "version_code": 67
       }
     ],
-    "total": 21,
+    "total": 25,
     "page": 1,
     "pageSize": 10
   },
-  "time": "1773430054"
+  "time": "1779210818"
 }

@@ -26,17 +26,17 @@
         "blurb": "",
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/base.tzst",
-        "file_md5": "3d5c31b1346985d582f04d239004b4d7",
+        "file_md5": "96df60f3cff612a9747e56cae9d4c6e8",
         "file_name": "base.tzst",
-        "file_size": "40612198",
+        "file_size": "83424612",
         "id": 8,
         "is_base": 0,
         "is_ui": 1,
         "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
         "name": "base",
         "type": 5,
-        "version": "1.0.0",
-        "version_code": 1
+        "version": "1.0.1",
+        "version_code": 2
       },
       {
         "base_type": 0,
@@ -143,14 +143,14 @@
     "imagefs": {
       "display_name": "Firmware",
       "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/imagefs.zst",
-      "file_md5": "27fd516411780c91dace321dd3b73d66",
+      "file_md5": "643024d54f11d01196ffdb2918dc3c85",
       "file_name": "imagefs.zst",
-      "file_size": "168943620",
+      "file_size": "172206649",
       "id": 1,
       "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
       "name": "Firmware",
-      "version": "1.3.3",
-      "version_code": 23
+      "version": "1.4.1",
+      "version_code": 31
     },
     "launch_windowed_mode": 0,
     "start_param": "",
@@ -195,5 +195,5 @@
     },
     "video_memory": 0
   },
-  "time": "1773430054"
+  "time": "1779210818"
 }

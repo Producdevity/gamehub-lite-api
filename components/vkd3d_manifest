@@ -5,8 +5,22 @@
     "type": 4,
     "type_name": "vkd3d",
     "display_name": "VKD3D Proton",
-    "total": 5,
+    "total": 6,
     "components": [
+      {
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/vkd3d-proton-3.0.1.tzst",
+        "file_md5": "26b2cbf4738b74bb257c1877ade9a1cb",
+        "file_name": "vkd3d-proton-3.0.1.tzst",
+        "file_size": "5178980",
+        "id": 437,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "vkd3d-proton-3.0.1",
+        "type": 4,
+        "version": "1.0.0",
+        "version_code": 1
+      },
       {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/vkd3d-proton-3.0b.tzst",

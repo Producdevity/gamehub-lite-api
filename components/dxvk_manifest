@@ -5,8 +5,36 @@
     "type": 3,
     "type_name": "dxvk",
     "display_name": "DXVK Layers",
-    "total": 29,
+    "total": 31,
     "components": [
+      {
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dxvk-1.12.0-sarek-dyasync.tzst",
+        "file_md5": "a84304e53659142aa820558a51ec7640",
+        "file_name": "dxvk-1.12.0-sarek-dyasync.tzst",
+        "file_size": "6255786",
+        "id": 430,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "dxvk-1.12.0-sarek-dyasync",
+        "type": 3,
+        "version": "1.0.0",
+        "version_code": 1
+      },
+      {
+        "display_name": "",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dxvk-sarek-v1.12.0.tzst",
+        "file_md5": "580d0b9ce2bead84f33c7c1a790854ba",
+        "file_name": "dxvk-sarek-v1.12.0.tzst",
+        "file_size": "9789808",
+        "id": 428,
+        "is_ui": 1,
+        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
+        "name": "dxvk-1.12.0-sarek",
+        "type": 3,
+        "version": "1.0.0",
+        "version_code": 1
+      },
       {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/dxvk-v2.7.1-1-async.tzst",
