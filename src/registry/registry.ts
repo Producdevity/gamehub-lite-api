@@ -19,6 +19,8 @@ export interface OriginalComponentInfo {
   originalFileName: string;
   githubFileName: string;
   originalDownloadUrl: string;
+  fileMd5: string;
+  fileSize: string;
 }
 
 /**
@@ -77,6 +79,8 @@ export class ComponentRegistry {
       originalFileName,
       githubFileName,
       originalDownloadUrl: component.download_url,
+      fileMd5: component.file_md5.toLowerCase(),
+      fileSize: component.file_size,
     });
 
     const rewrittenComponent: Component = {

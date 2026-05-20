@@ -1,10 +1,10 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-import { execFileSync } from 'child_process';
 
 import { parseXmlFile } from './parsers/xml-parser.js';
 import { parseCustomComponents } from './parsers/custom-parser.js';
-import { ComponentRegistry, OriginalComponentInfo } from './registry/registry.js';
+import { checkReleaseAssets, printReleaseAssetFailures } from './release/release-check.js';
+import { ComponentRegistry } from './registry/registry.js';
 import {
   generateAllManifests,
   generateIndex,
@@ -17,7 +17,6 @@ import {
   generateExecuteScript,
 } from './generators/index.js';
 import { formatJson } from './utils/json.js';
-import { toGitHubAssetKey } from './utils/github-assets.js';
 import type { BuildConfig, Container, Imagefs, Defaults, ExecutionConfig } from './types/index.js';
 import { DEFAULT_CONFIG } from './types/index.js';
 
@@ -27,74 +26,6 @@ import { DEFAULT_CONFIG } from './types/index.js';
 function loadJson<T>(path: string): T {
   const content = readFileSync(path, 'utf-8');
   return JSON.parse(content) as T;
-}
-
-/**
- * Get the list of assets in a GitHub release
- */
-function getGitHubReleaseAssets(repo: string, release: string): Set<string> {
-  try {
-    const env: NodeJS.ProcessEnv = {
-      ...process.env,
-      NO_COLOR: '1',
-      CLICOLOR: '0',
-      FORCE_COLOR: '0',
-      TERM: 'dumb',
-    };
-    delete env.GH_FORCE_TTY;
-    delete env.CLICOLOR_FORCE;
-
-    const releaseOutput = execFileSync(
-      'gh',
-      ['api', `repos/${repo}/releases/tags/${release}`],
-      { encoding: 'utf-8', env, stdio: ['pipe', 'pipe', 'pipe'] }
-    );
-    const releaseInfo = JSON.parse(stripAnsi(releaseOutput)) as { id: number };
-    const assetsOutput = execFileSync(
-      'gh',
-      [
-        'api',
-        '--paginate',
-        '--slurp',
-        `repos/${repo}/releases/${releaseInfo.id}/assets?per_page=100`,
-      ],
-      { encoding: 'utf-8', env, maxBuffer: 100 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe'] }
-    );
-    const pages = JSON.parse(stripAnsi(assetsOutput)) as Array<Array<{ name: string }>>;
-    return new Set(pages.flatMap((page) => page.map((asset) => toGitHubAssetKey(asset.name))));
-  } catch {
-    console.warn('   Warning: Could not fetch GitHub release assets (gh CLI not available or not authenticated)');
-    return new Set();
-  }
-}
-
-function stripAnsi(value: string): string {
-  return value.replace(/\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g, '');
-}
-
-/**
- * Check for missing files on GitHub and report them
- */
-function checkMissingFiles(
-  registry: ComponentRegistry,
-  config: BuildConfig
-): { missing: OriginalComponentInfo[]; total: number } {
-  const githubAssets = getGitHubReleaseAssets(config.githubRepo, config.githubRelease);
-
-  if (githubAssets.size === 0) {
-    return { missing: [], total: 0 };
-  }
-
-  const allInfo = registry.getAllOriginalInfo();
-  const missing: OriginalComponentInfo[] = [];
-
-  for (const info of allInfo) {
-    if (!githubAssets.has(toGitHubAssetKey(info.githubFileName))) {
-      missing.push(info);
-    }
-  }
-
-  return { missing, total: allInfo.length };
 }
 
 /**
@@ -240,30 +171,25 @@ async function build(config: BuildConfig): Promise<void> {
   console.log(`  - Type 7 (Steam): ${counts[7]}`);
   console.log(`  Containers: ${registry.containers.length}`);
 
-  // Check for missing files on GitHub
-  console.log('\n7. Checking GitHub release for missing files...');
-  const { missing, total } = checkMissingFiles(registry, config);
+  console.log('\n7. Checking GitHub release assets...');
+  const releaseCheck = checkReleaseAssets(registry, config);
+  const issueCount =
+    releaseCheck.missing.length +
+    releaseCheck.metadataConflicts.length +
+    releaseCheck.sizeMismatches.length +
+    releaseCheck.hashMismatches.length;
 
-  if (total === 0) {
-    console.log('   Skipped (could not fetch GitHub assets)\n');
-  } else if (missing.length === 0) {
-    console.log(`   ✓ All ${total} component files exist on GitHub release\n`);
-  } else {
-    console.log(`\n   ⚠ MISSING FILES: ${missing.length} of ${total} files not found on GitHub!\n`);
-    console.log('   Upload these before deployment.\n');
-    console.log('   Missing release assets:');
-    for (const info of missing) {
-      console.log(`   - ${info.githubFileName} (${info.name}, ID: ${info.id})`);
+  if (issueCount === 0) {
+    console.log(`   ✓ All ${releaseCheck.total} component files exist and match component metadata\n`);
+    if (releaseCheck.verified > 0) {
+      console.log(`   Verified ${releaseCheck.verified} release asset MD5s`);
     }
-    console.log('\n   Run:');
-    console.log('   ```bash');
-    console.log('   npm run import-gamehub-xml -- --download-assets');
-    console.log('   npm run release-assets:upload-new');
-    console.log('   npm run build');
-    console.log('   ```\n');
+  } else {
+    console.log(`\n   RELEASE ASSET ERRORS: ${issueCount}\n`);
+    printReleaseAssetFailures(releaseCheck);
+    console.log('\n   Fix the listed release asset errors, then run npm run build again.\n');
 
-    // Exit with error to prevent deployment with missing files
-    console.error('   ❌ Build failed: Missing files must be uploaded before deployment');
+    console.error('   ❌ Build failed: GitHub release assets do not match component metadata');
     process.exit(1);
   }
 }
