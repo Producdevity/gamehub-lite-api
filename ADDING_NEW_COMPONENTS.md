@@ -74,19 +74,22 @@ npm run release-assets:check-deep
 Upload assets missing from the release:
 
 ```bash
+npm run release-assets:upload-new -- --dry-run
 npm run release-assets:upload-new
 ```
 
-Replace changed same-name assets only when you intend to overwrite the release copy:
+Replace changed release assets after reviewing the dry run:
 
 ```bash
+npm run release-assets:replace-changed -- --dry-run
 npm run release-assets:replace-changed
 ```
 
-To replace only selected files, leave only those files in `.tmp_components/gamehub-xml/` and run:
+If `npm run build` reports a release asset error for a file that already exists in `.tmp_components/gamehub-xml/`, repair from the local cache:
 
 ```bash
-npm run release-assets:replace-current
+npm run release-assets:repair -- --dry-run
+npm run release-assets:repair
 ```
 
 ### Step 6: Run the Build
@@ -100,12 +103,12 @@ Build:
 2. Merge with any custom components
 3. Generate all 16 API endpoint files
 4. Validate all data
-5. Check if all component files exist on GitHub release
-6. Fails if release assets are still missing
+5. Check GitHub release assets for components, imagefs, containers, and container sub-assets
+6. Fail if an asset is missing, incomplete on GitHub, duplicated with different metadata, or has a mismatched size/MD5
 
 ### Step 7: Verify and Commit
 
-If the build reports missing files, run `npm run release-assets:check`, upload the missing assets, then build again.
+If the build reports release asset errors, fix the listed release filenames or uploads, then build again.
 
 ```bash
 npm run build
@@ -122,6 +125,8 @@ git push
 ## Method 2: Adding Custom Components
 
 For components that don't exist in the XML (or have malformed XML data):
+
+Before adding a custom component, check whether the official XML already provides it. Remove custom components once official XML covers the same component.
 
 ### Step 1: Edit custom_components.json
 
@@ -153,6 +158,8 @@ Add the component to `data/custom_components.json`:
 - `file_name` - Name of the file on GitHub release
 - `file_md5` - MD5 hash of the file
 - `file_size` - File size in bytes (as STRING, not number)
+
+Use a release filename that cannot collide with official XML assets. Do not rely on case-only differences such as `SteamAgent.tar.zst` vs `steamagent.tar.zst`.
 
 ### Step 2: Upload the File
 
@@ -238,11 +245,11 @@ The build system generates these 16 files:
 
 ## Troubleshooting
 
-### Build fails with "Missing files"
+### Build fails with release asset errors
 
-The build intentionally fails if component files don't exist on GitHub. This prevents deploying broken configurations.
+The build intentionally fails if release assets are missing, incomplete on GitHub, duplicated with different metadata, or do not match the configured size/MD5. This prevents deploying broken configurations.
 
-Upload the missing files, then rebuild.
+Fix the listed release assets, then rebuild.
 
 ### Component is not appearing in app
 
@@ -266,7 +273,7 @@ In `custom_components.json`, `file_size` must be a string of the file size in by
 ## Quick Reference
 
 ```bash
-# Full build with validation and missing file check
+# Full build with validation and release asset check
 npm run build
 
 # Validate only (no file generation)
@@ -284,8 +291,8 @@ npm run release-assets:upload-new
 # Replace changed same-name release assets
 npm run release-assets:replace-changed
 
-# Replace only the files currently present in .tmp_components/gamehub-xml/
-npm run release-assets:replace-current
+# Repair build-reported release errors using exact files already in .tmp_components/gamehub-xml/
+npm run release-assets:repair
 ```
 
 ---

@@ -48,9 +48,9 @@ The build system generates 16 API endpoint files:
 - `executeScript/generic` - Generic ARM execution preset
 - `executeScript/qualcomm` - Qualcomm-specific preset
 
-### Missing Files Check
+### Release Asset Check
 
-`npm run build` checks the `Components` release. Missing assets are listed by release filename and the build exits non-zero.
+`npm run build` checks the `Components` release before deployment. It fails when an asset is missing, when GitHub has an incomplete release asset upload, when two records point to the same release filename with different MD5/size metadata, or when the release file size/MD5 does not match the API metadata. Exact MD5 checks use `.tmp_components/release-md5-cache.json`.
 
 ## Directory Structure
 
@@ -160,24 +160,32 @@ Install and run the official GameHub app, then copy the XML files from its app-d
    ```
 5. Upload assets missing from the release:
    ```bash
+   npm run release-assets:upload-new -- --dry-run
    npm run release-assets:upload-new
    ```
-6. Replace changed same-name assets only when you intend to overwrite the release copy:
+6. Replace changed release assets after reviewing the dry run:
    ```bash
+   npm run release-assets:replace-changed -- --dry-run
    npm run release-assets:replace-changed
-   ```
-   To replace only selected files, leave only those files in `.tmp_components/gamehub-xml/` and run:
-   ```bash
-   npm run release-assets:replace-current
    ```
 7. Run `npm run build`
 8. Review the diff and commit changes
 
+If `npm run build` reports a release asset error for a file that already exists in `.tmp_components/gamehub-xml/`, repair from the local cache:
+
+```bash
+npm run release-assets:repair -- --dry-run
+npm run release-assets:repair
+```
+
 ### Custom Components
 
 1. Add to `data/custom_components.json`
-2. Run `npm run build`
-3. Upload the component file to GitHub release
+2. Use custom release filenames that cannot collide with official XML assets
+3. Run `npm run build`
+4. Upload the component file to GitHub release
+
+Remove a custom component when the official XML now provides the same component. Keeping both can make the app show duplicate entries and can create release filename collisions.
 
 ## CDN and Downloads
 
