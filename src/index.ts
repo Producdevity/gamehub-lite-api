@@ -50,26 +50,21 @@ async function build(config: BuildConfig): Promise<void> {
   console.log('GameHub Lite API Build System');
   console.log('=============================\n');
 
-  // 1. Parse XML
   console.log('1. Parsing XML source...');
   const xmlComponents = parseXmlFile(config.xmlSource);
   console.log(`   Found ${xmlComponents.length} components from XML`);
 
-  // 2. Parse custom components
   console.log('2. Loading custom components...');
   const customComponents = parseCustomComponents(config.customComponentsFile, config);
   console.log(`   Found ${customComponents.length} custom components\n`);
 
-  // Merge components
   const components = [...xmlComponents, ...customComponents];
   console.log(`   Total: ${components.length} components\n`);
 
-  // 3. Create registry
   console.log('3. Building registry...');
   const registry = new ComponentRegistry(config);
   registry.addComponents(components);
 
-  // 4. Load static data
   console.log('4. Loading static data...');
   registry.containers = loadJson<Container[]>(config.containersFile);
   console.log(`   Loaded ${registry.containers.length} containers`);
@@ -83,7 +78,6 @@ async function build(config: BuildConfig): Promise<void> {
   registry.executionConfig = loadJson<ExecutionConfig>(config.executionConfigFile);
   console.log(`   Loaded execution config\n`);
 
-  // 5. Validate
   console.log('5. Validating...');
   const validation = registry.validate();
   if (!validation.valid) {
@@ -95,25 +89,19 @@ async function build(config: BuildConfig): Promise<void> {
   }
   console.log('   ✓ All validations passed\n');
 
-  // 6. Get timestamp for consistency
   const timestamp = config.timestamp || String(Math.floor(Date.now() / 1000));
 
-  // 7. Generate output files
   console.log('6. Generating output files...');
 
-  // Manifests
   const manifests = generateAllManifests(registry);
   for (const [name, data] of manifests) {
     writeOutput(config.outputDir, `components/${name}`, data);
   }
 
-  // Index
   writeOutput(config.outputDir, 'components/index', generateIndex(registry));
 
-  // Downloads
   writeOutput(config.outputDir, 'components/downloads', generateDownloads(registry));
 
-  // Simulator endpoints
   writeOutput(
     config.outputDir,
     'simulator/v2/getAllComponentList',
@@ -158,7 +146,6 @@ async function build(config: BuildConfig): Promise<void> {
 
   console.log('\n✓ Build complete!\n');
 
-  // Summary
   const counts = registry.getCountsByType();
   console.log('Summary:');
   console.log(`  Total components: ${registry.getTotalCount()}`);
@@ -175,12 +162,14 @@ async function build(config: BuildConfig): Promise<void> {
   const releaseCheck = checkReleaseAssets(registry, config);
   const issueCount =
     releaseCheck.missing.length +
+    releaseCheck.invalidAssets.length +
     releaseCheck.metadataConflicts.length +
+    releaseCheck.nameMismatches.length +
     releaseCheck.sizeMismatches.length +
     releaseCheck.hashMismatches.length;
 
   if (issueCount === 0) {
-    console.log(`   ✓ All ${releaseCheck.total} component files exist and match component metadata\n`);
+    console.log(`   ✓ All ${releaseCheck.total} release assets exist and match metadata\n`);
     if (releaseCheck.verified > 0) {
       console.log(`   Verified ${releaseCheck.verified} release asset MD5s`);
     }
@@ -229,7 +218,6 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const command = args[0] || 'build';
 
-  // Use default config
   const config = DEFAULT_CONFIG;
 
   switch (command) {

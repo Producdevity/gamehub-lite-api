@@ -14,7 +14,7 @@ import {
 import { basename, join } from 'path';
 
 import { DEFAULT_CONFIG, type Container, type Imagefs } from '../types/index.js';
-import { toGitHubAssetName } from '../utils/github-assets.js';
+import { toGitHubAssetKey, toGitHubAssetName } from '../utils/github-assets.js';
 import { formatJson } from '../utils/json.js';
 
 const INPUT_DIR = 'tmp';
@@ -200,6 +200,68 @@ function basenameFromUrl(url: string): string {
 
 function encodedDownloadUrl(url: string): string {
   return url.replace(/ /g, '%20');
+}
+
+function splitArchiveExtension(fileName: string): { stem: string; extension: string } {
+  if (fileName.endsWith('.tar.zst')) {
+    return { stem: fileName.slice(0, -'.tar.zst'.length), extension: '.tar.zst' };
+  }
+
+  const dot = fileName.lastIndexOf('.');
+  if (dot === -1) {
+    return { stem: fileName, extension: '' };
+  }
+
+  return { stem: fileName.slice(0, dot), extension: fileName.slice(dot) };
+}
+
+function uniqueAssetName(entry: RawEntry): string {
+  const original = toGitHubFileName(entry.file_name);
+  const { extension } = splitArchiveExtension(original);
+  const stem = toGitHubFileName(entry.name || splitArchiveExtension(original).stem);
+  return `${stem}-${entry.file_md5}${extension}`;
+}
+
+function dedupeOfficialAssetNames(records: XmlRecord[]): void {
+  const byKey = new Map<string, XmlRecord[]>();
+
+  for (const record of records) {
+    const entry = record.wrapper.entry;
+    if (!hasDownload(entry)) continue;
+
+    const key = toGitHubAssetKey(entry.file_name);
+    const group = byKey.get(key) ?? [];
+    group.push(record);
+    byKey.set(key, group);
+  }
+
+  const usedKeys = new Set(byKey.keys());
+  for (const recordsForName of byKey.values()) {
+    recordsForName.sort((a, b) => a.wrapper.entry.id - b.wrapper.entry.id);
+
+    for (const [index, record] of recordsForName.entries()) {
+      const entry = record.wrapper.entry;
+      const signature = `${entry.file_md5}:${entry.file_size}`;
+      const hasConflict = recordsForName.some(
+        (other) => `${other.wrapper.entry.file_md5}:${other.wrapper.entry.file_size}` !== signature
+      );
+
+      if (index === 0 || !hasConflict) {
+        continue;
+      }
+
+      let nextName = uniqueAssetName(entry);
+      let suffix = 2;
+      while (usedKeys.has(toGitHubAssetKey(nextName))) {
+        const { stem, extension } = splitArchiveExtension(uniqueAssetName(entry));
+        nextName = `${stem}-${suffix}${extension}`;
+        suffix += 1;
+      }
+
+      entry.file_name = nextName;
+      usedKeys.add(toGitHubAssetKey(nextName));
+    }
+  }
 }
 
 function hasDownload(entry: RawEntry): boolean {
@@ -563,6 +625,7 @@ async function main(): Promise<void> {
   const validComponents = officialComponents.filter((record) =>
     VALID_COMPONENT_TYPES.has(record.wrapper.entry.type)
   );
+  dedupeOfficialAssetNames(validComponents);
   const skippedComponents = officialComponents.filter(
     (record) => !VALID_COMPONENT_TYPES.has(record.wrapper.entry.type)
   );

@@ -12,16 +12,20 @@ import {
   unlinkSync,
   writeFileSync,
 } from 'fs';
-import { join } from 'path';
+import { basename, join } from 'path';
 
-import { DEFAULT_CONFIG } from '../types/index.js';
+import { parseCustomComponents } from '../parsers/custom-parser.js';
+import { parseXmlFile } from '../parsers/xml-parser.js';
+import { collectExpectedAssets, type ExpectedReleaseAsset } from '../release/release-check.js';
+import { ComponentRegistry } from '../registry/registry.js';
+import { DEFAULT_CONFIG, type Container, type Imagefs } from '../types/index.js';
 import { toGitHubAssetKey } from '../utils/github-assets.js';
 import { formatJson } from '../utils/json.js';
 
 const DEFAULT_DOWNLOAD_DIR = join(DEFAULT_CONFIG.downloadDir, 'gamehub-xml');
 const DEFAULT_EXISTING_DIR = join(DEFAULT_CONFIG.downloadDir, 'release-existing');
 
-type Command = 'check' | 'upload-new' | 'replace-changed' | 'replace-current';
+type Command = 'check' | 'upload-new' | 'replace-changed' | 'repair';
 type AssetStatus = 'new' | 'same' | 'changed' | 'unknown';
 
 interface ManifestAsset {
@@ -46,8 +50,10 @@ interface ReleaseInfo {
 }
 
 interface ReleaseAsset {
+  id: number;
   name: string;
   size: number;
+  state?: string;
   digest?: string | null;
   browser_download_url?: string;
 }
@@ -55,6 +61,7 @@ interface ReleaseAsset {
 interface ParsedArgs {
   command: Command;
   downloadExisting: boolean;
+  dryRun: boolean;
   downloadDir: string;
   existingDir: string;
   repo: string;
@@ -76,11 +83,12 @@ interface ComparedAsset {
 function parseArgs(): ParsedArgs {
   const args = process.argv.slice(2);
   const command = (args.shift() ?? 'check') as Command;
-  if (!['check', 'upload-new', 'replace-changed', 'replace-current'].includes(command)) {
+  if (!['check', 'upload-new', 'replace-changed', 'repair'].includes(command)) {
     throw new Error(`Unknown command: ${command}`);
   }
 
   let downloadExisting = command === 'replace-changed';
+  let dryRun = false;
   let downloadDir = DEFAULT_DOWNLOAD_DIR;
   let existingDir = DEFAULT_EXISTING_DIR;
   let repo = DEFAULT_CONFIG.githubRepo;
@@ -90,6 +98,8 @@ function parseArgs(): ParsedArgs {
     const arg = args[i];
     if (arg === '--download-existing') {
       downloadExisting = true;
+    } else if (arg === '--dry-run') {
+      dryRun = true;
     } else if (arg === '--download-dir') {
       downloadDir = args[++i] ?? '';
       if (!downloadDir) throw new Error('--download-dir requires a path');
@@ -115,7 +125,7 @@ function parseArgs(): ParsedArgs {
     }
   }
 
-  return { command, downloadExisting, downloadDir, existingDir, repo, release };
+  return { command, downloadExisting, dryRun, downloadDir, existingDir, repo, release };
 }
 
 function readManifest(downloadDir: string): AssetManifest {
@@ -127,6 +137,48 @@ function readManifest(downloadDir: string): AssetManifest {
   }
 
   return JSON.parse(readFileSync(manifestPath, 'utf-8')) as AssetManifest;
+}
+
+function loadJson<T>(path: string): T {
+  return JSON.parse(readFileSync(path, 'utf-8')) as T;
+}
+
+function loadRegistry(): ComponentRegistry {
+  const xmlComponents = parseXmlFile(DEFAULT_CONFIG.xmlSource);
+  const customComponents = parseCustomComponents(DEFAULT_CONFIG.customComponentsFile, DEFAULT_CONFIG);
+  const registry = new ComponentRegistry(DEFAULT_CONFIG);
+  registry.addComponents([...xmlComponents, ...customComponents]);
+  registry.containers = loadJson<Container[]>(DEFAULT_CONFIG.containersFile);
+  registry.imagefs = loadJson<Imagefs>(DEFAULT_CONFIG.imagefsFile);
+  return registry;
+}
+
+function assetManifestFromLocalRegistry(downloadDir: string): AssetManifest {
+  if (!existsSync(downloadDir)) {
+    throw new Error(`Missing ${downloadDir}. Run "npm run import-gamehub-xml -- --download-assets" first.`);
+  }
+
+  const localNames = new Set<string>(readdirSync(downloadDir));
+  const expectedAssets: ExpectedReleaseAsset[] = collectExpectedAssets(loadRegistry());
+  const assets = expectedAssets
+    .filter((asset: ExpectedReleaseAsset) => localNames.has(asset.githubFileName))
+    .map((asset: ExpectedReleaseAsset) => manifestAssetFromExpected(asset));
+
+  return { total: assets.length, assets };
+}
+
+function manifestAssetFromExpected(asset: ExpectedReleaseAsset): ManifestAsset {
+  return {
+    kind: asset.kind,
+    id: asset.id,
+    name: asset.name,
+    assetName: asset.githubFileName,
+    originalFileName: asset.githubFileName,
+    downloadUrl: '',
+    fileMd5: asset.fileMd5,
+    fileSize: asset.fileSize,
+    reasons: ['local registry repair'],
+  };
 }
 
 function hashFile(path: string, algorithm: 'md5' | 'sha256'): string {
@@ -268,8 +320,20 @@ function downloadExistingReleaseAsset(asset: ReleaseAsset, existingDir: string):
 }
 
 function compareAssets(args: ParsedArgs): { assets: ComparedAsset[]; releaseTotal: number } {
-  const manifest = readManifest(args.downloadDir);
-  const localAssets = manifest.assets.map((asset) => verifyLocalAsset(asset, args.downloadDir));
+  return compareManifestAssets(args, readManifest(args.downloadDir));
+}
+
+function compareLocalRegistryAssets(args: ParsedArgs): { assets: ComparedAsset[]; releaseTotal: number } {
+  return compareManifestAssets(args, assetManifestFromLocalRegistry(args.downloadDir));
+}
+
+function compareManifestAssets(
+  args: ParsedArgs,
+  manifest: AssetManifest
+): { assets: ComparedAsset[]; releaseTotal: number } {
+  const localAssets = manifest.assets.map((asset: ManifestAsset) =>
+    verifyLocalAsset(asset, args.downloadDir)
+  );
   const releaseAssets = fetchReleaseAssets(args.repo, args.release);
 
   for (const local of localAssets) {
@@ -279,6 +343,18 @@ function compareAssets(args: ParsedArgs): { assets: ComparedAsset[]; releaseTota
     if (!releaseAsset) {
       local.status = 'new';
       local.reason = 'not present on release';
+      continue;
+    }
+
+    if (releaseAsset.state && releaseAsset.state !== 'uploaded') {
+      local.status = 'changed';
+      local.reason = `release asset is ${releaseAsset.state}`;
+      continue;
+    }
+
+    if (releaseAsset.name !== local.manifest.assetName) {
+      local.status = 'changed';
+      local.reason = `release filename differs: ${releaseAsset.name}`;
       continue;
     }
 
@@ -310,13 +386,16 @@ function compareAssets(args: ParsedArgs): { assets: ComparedAsset[]; releaseTota
   }
 
   return {
-    assets: localAssets.sort((a, b) => a.manifest.assetName.localeCompare(b.manifest.assetName)),
+    assets: localAssets.sort((a: ComparedAsset, b: ComparedAsset) =>
+      a.manifest.assetName.localeCompare(b.manifest.assetName)
+    ),
     releaseTotal: releaseAssets.size,
   };
 }
 
 function summarize(assets: ComparedAsset[], releaseTotal: number): void {
-  const byStatus = (status: AssetStatus) => assets.filter((asset) => asset.status === status);
+  const byStatus = (status: AssetStatus): ComparedAsset[] =>
+    assets.filter((asset: ComparedAsset) => asset.status === status);
   const newAssets = byStatus('new');
   const sameAssets = byStatus('same');
   const changedAssets = byStatus('changed');
@@ -360,7 +439,7 @@ function writeReport(args: ParsedArgs, assets: ComparedAsset[]): void {
       repo: args.repo,
       release: args.release,
       generatedAt: new Date().toISOString(),
-      assets: assets.map((asset) => ({
+      assets: assets.map((asset: ComparedAsset) => ({
         name: asset.manifest.assetName,
         kind: asset.manifest.kind,
         status: asset.status,
@@ -384,7 +463,7 @@ function uploadAssets(args: ParsedArgs, assets: ComparedAsset[], clobber: boolea
 
   uploadFilePaths(
     args,
-    assets.map((asset) => asset.localPath),
+    assets.map((asset: ComparedAsset) => asset.localPath),
     clobber
   );
 }
@@ -395,10 +474,40 @@ function uploadFilePaths(args: ParsedArgs, filePaths: string[], clobber: boolean
     return;
   }
 
+  assertUniqueUploadNames(filePaths);
+  const releaseAssets = clobber ? fetchReleaseAssets(args.repo, args.release) : null;
+
   for (const filePath of filePaths) {
+    const fileName = basename(filePath);
+    const assetKey = toGitHubAssetKey(fileName);
+    const existingAsset = releaseAssets?.get(assetKey);
+
+    if (
+      clobber &&
+      existingAsset &&
+      (existingAsset.name !== fileName || existingAsset.state === 'starter')
+    ) {
+      if (args.dryRun) {
+        console.log(
+          `Would delete existing release asset ${existingAsset.name}` +
+            `${existingAsset.state ? ` (${existingAsset.state})` : ''}` +
+            ` before uploading ${fileName}`
+        );
+      } else {
+        deleteReleaseAsset(args, existingAsset, fileName);
+        releaseAssets?.delete(assetKey);
+      }
+    }
+
     const ghArgs = ['release', 'upload', args.release, filePath, '--repo', args.repo];
     if (clobber) {
       ghArgs.push('--clobber');
+    }
+
+    if (args.dryRun) {
+      const mode = clobber ? 'with --clobber' : 'without --clobber';
+      console.log(`Would upload ${filePath} ${mode}`);
+      continue;
     }
 
     console.log(`Uploading ${filePath}`);
@@ -424,15 +533,45 @@ function uploadFilePaths(args: ParsedArgs, filePaths: string[], clobber: boolean
   }
 }
 
-function listCurrentUploadFiles(downloadDir: string): string[] {
-  if (!existsSync(downloadDir)) {
-    throw new Error(`Missing ${downloadDir}. Run "npm run import-gamehub-xml -- --download-assets" first.`);
-  }
+function assertUniqueUploadNames(filePaths: string[]): void {
+  const seen = new Map<string, string>();
 
-  return readdirSync(downloadDir)
-    .filter((name) => /\.(?:tzst|zst|yml)$/.test(name))
-    .sort((a, b) => a.localeCompare(b))
-    .map((name) => join(downloadDir, name));
+  for (const filePath of filePaths) {
+    const fileName = basename(filePath);
+    const key = toGitHubAssetKey(fileName);
+    const existing = seen.get(key);
+    if (existing) {
+      throw new Error(
+        `Refusing to upload both ${existing} and ${filePath}; they resolve to the same release asset name`
+      );
+    }
+    seen.set(key, filePath);
+  }
+}
+
+function deleteReleaseAsset(args: ParsedArgs, asset: ReleaseAsset, replacementName: string): void {
+  console.log(
+    `Deleting existing release asset ${asset.name}` +
+      `${asset.state ? ` (${asset.state})` : ''}` +
+      ` before uploading ${replacementName}`
+  );
+
+  const result = spawnSync(
+    'gh',
+    ['api', '-X', 'DELETE', `repos/${args.repo}/releases/assets/${asset.id}`],
+    {
+      encoding: 'utf-8',
+      stdio: ['inherit', 'inherit', 'pipe'],
+    }
+  );
+
+  if (result.status !== 0 || result.error) {
+    const stderr = result.stderr.trim();
+    if (stderr) {
+      console.error(stderr);
+    }
+    throw new Error(result.error?.message ?? `failed to delete release asset ${asset.name}`);
+  }
 }
 
 async function main(): Promise<void> {
@@ -441,31 +580,32 @@ async function main(): Promise<void> {
   console.log(`Release: ${args.repo} ${args.release}`);
   console.log(`Local assets: ${args.downloadDir}\n`);
 
-  if (args.command === 'replace-current') {
-    const filePaths = listCurrentUploadFiles(args.downloadDir);
-    console.log('Replacing current local upload files:');
-    for (const filePath of filePaths) {
-      console.log(`  ${filePath}`);
-    }
-    console.log('');
-    uploadFilePaths(args, filePaths, true);
-    return;
-  }
-
-  const { assets: compared, releaseTotal } = compareAssets(args);
+  const { assets: compared, releaseTotal } =
+    args.command === 'repair' ? compareLocalRegistryAssets(args) : compareAssets(args);
   summarize(compared, releaseTotal);
   writeReport(args, compared);
 
   if (args.command === 'upload-new') {
     uploadAssets(
       args,
-      compared.filter((asset) => asset.status === 'new'),
+      compared.filter((asset: ComparedAsset) => asset.status === 'new'),
       false
     );
   } else if (args.command === 'replace-changed') {
     uploadAssets(
       args,
-      compared.filter((asset) => asset.status === 'changed'),
+      compared.filter((asset: ComparedAsset) => asset.status === 'changed'),
+      true
+    );
+  } else if (args.command === 'repair') {
+    uploadAssets(
+      args,
+      compared.filter((asset: ComparedAsset) => asset.status === 'new'),
+      false
+    );
+    uploadAssets(
+      args,
+      compared.filter((asset: ComparedAsset) => asset.status === 'changed'),
       true
     );
   }

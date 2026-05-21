@@ -14,7 +14,7 @@
     "release-assets:check-deep": "tsc && node dist/scripts/release-assets.js check --download-existing",
     "release-assets:upload-new": "tsc && node dist/scripts/release-assets.js upload-new",
     "release-assets:replace-changed": "tsc && node dist/scripts/release-assets.js replace-changed",
-    "release-assets:replace-current": "tsc && node dist/scripts/release-assets.js replace-current",
+    "release-assets:repair": "tsc && node dist/scripts/release-assets.js repair",
     "convert-drivers": "tsc && node dist/scripts/convert-drivers.js",
     "compile": "tsc",
     "dev": "tsc --watch"
