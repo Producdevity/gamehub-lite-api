@@ -14,16 +14,6 @@
       "file_size": "41192642"
     },
     {
-      "id": 990,
-      "name": "Turnip_v26.0.0_R8",
-      "type": 2,
-      "version": "1.0.0",
-      "version_code": 1,
-      "file_name": "Turnip_v26.0.0_R8.tzst",
-      "file_md5": "9bc8ff34acb8f392f35c46b7cba5e92f",
-      "file_size": "3238818"
-    },
-    {
       "id": 991,
       "name": "Turnip_v26.0.0_R8_Gmem",
       "type": 2,
@@ -134,16 +124,6 @@
       "file_size": "3063101"
     },
     {
-      "id": 1002,
-      "name": "Turnip_Gen8_V23",
-      "type": 2,
-      "version": "1.0.0",
-      "version_code": 1,
-      "file_name": "Turnip_Gen8_V23.tzst",
-      "file_md5": "587c437226338b6cad60e251d13d3af0",
-      "file_size": "3100163"
-    },
-    {
       "id": 1003,
       "name": "Turnip_Gen8_V24",
       "type": 2,
@@ -154,16 +134,6 @@
       "file_size": "3119705"
     },
     {
-      "id": 1004,
-      "name": "Turnip_Gen8_V25",
-      "type": 2,
-      "version": "1.0.0",
-      "version_code": 1,
-      "file_name": "Turnip_Gen8_V25.tzst",
-      "file_md5": "dad66215792a1e64eea9f3fdb0aebe0f",
-      "file_size": "3123993"
-    },
-    {
       "id": 1005,
       "name": "Turnip_v26.0.0_Autotuner",
       "type": 2,
@@ -172,26 +142,6 @@
       "file_name": "Turnip_v26.0.0_Autotuner.tzst",
       "file_md5": "21539eefd1b8685c875f0dee8f9fcdae",
       "file_size": "3133688"
-    },
-    {
-      "id": 1006,
-      "name": "Turnip_v26.1.0",
-      "type": 2,
-      "version": "1.0.0",
-      "version_code": 1,
-      "file_name": "Turnip_v26.1.0.tzst",
-      "file_md5": "23b31992b4ca3f49fc286c8c4c6ad1b7",
-      "file_size": "3108412"
-    },
-    {
-      "id": 1007,
-      "name": "Turnip_v26.1.0_R2",
-      "type": 2,
-      "version": "1.0.0",
-      "version_code": 1,
-      "file_name": "Turnip_v26.1.0_R2.tzst",
-      "file_md5": "b29cd6795c2d53d356aaa7d0dd935a32",
-      "file_size": "3118002"
     },
     {
       "id": 1008,
@@ -292,16 +242,6 @@
       "file_name": "FEXCore-2603.tzst",
       "file_md5": "31f991a5cb68566a04f6325aefacd83b",
       "file_size": "2301090"
-    },
-    {
-      "id": 1019,
-      "name": "Turnip_v26.1.0_R4",
-      "type": 2,
-      "version": "1.0.0",
-      "version_code": 1,
-      "file_name": "Turnip_v26.1.0_R4.tzst",
-      "file_md5": "95df6c09b30a5c464d089afb9c04676a",
-      "file_size": "3050122"
     }
   ]
 }
