@@ -580,29 +580,11 @@
         "version": "1.0.0"
       },
       {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V23.tzst",
-        "file_md5": "587c437226338b6cad60e251d13d3af0",
-        "file_name": "Turnip_Gen8_V23.tzst",
-        "file_size": "3100163",
-        "name": "Turnip_Gen8_V23",
-        "type": 2,
-        "version": "1.0.0"
-      },
-      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V24.tzst",
         "file_md5": "f84e5f917a6c9337439cf9c334ccd67b",
         "file_name": "Turnip_Gen8_V24.tzst",
         "file_size": "3119705",
         "name": "Turnip_Gen8_V24",
-        "type": 2,
-        "version": "1.0.0"
-      },
-      {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_Gen8_V25.tzst",
-        "file_md5": "dad66215792a1e64eea9f3fdb0aebe0f",
-        "file_name": "Turnip_Gen8_V25.tzst",
-        "file_size": "3123993",
-        "name": "Turnip_Gen8_V25",
         "type": 2,
         "version": "1.0.0"
       },
@@ -1183,15 +1165,6 @@
         "version": "1.0.0"
       },
       {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.0.0_R8.tzst",
-        "file_md5": "9bc8ff34acb8f392f35c46b7cba5e92f",
-        "file_name": "Turnip_v26.0.0_R8.tzst",
-        "file_size": "3238818",
-        "name": "Turnip_v26.0.0_R8",
-        "type": 2,
-        "version": "1.0.0"
-      },
-      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/turnip_v26.0.0_R8_b1.tzst",
         "file_md5": "28f3ccef594f9cbdc06b9d5b428d7e7f",
         "file_name": "turnip_v26.0.0_R8_b1.tzst",
@@ -1260,15 +1233,6 @@
         "file_name": "Turnip_v26.0.0_R8_Sysmem.tzst",
         "file_size": "3237690",
         "name": "Turnip_v26.0.0_R8_Sysmem",
-        "type": 2,
-        "version": "1.0.0"
-      },
-      {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0.tzst",
-        "file_md5": "23b31992b4ca3f49fc286c8c4c6ad1b7",
-        "file_name": "Turnip_v26.1.0.tzst",
-        "file_size": "3108412",
-        "name": "Turnip_v26.1.0",
         "type": 2,
         "version": "1.0.0"
       },
@@ -1417,15 +1381,6 @@
         "version": "1.0.0"
       },
       {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_R2.tzst",
-        "file_md5": "b29cd6795c2d53d356aaa7d0dd935a32",
-        "file_name": "Turnip_v26.1.0_R2.tzst",
-        "file_size": "3118002",
-        "name": "Turnip_v26.1.0_R2",
-        "type": 2,
-        "version": "1.0.0"
-      },
-      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_R3.tzst",
         "file_md5": "6b9ab9bf7d144adbe181b0d60581c306",
         "file_name": "Turnip_v26.1.0_R3.tzst",
@@ -1440,15 +1395,6 @@
         "file_name": "Turnip_v26.1.0_R4.tzst",
         "file_size": "3076323",
         "name": "turnip_v26.1.0_R4",
-        "type": 2,
-        "version": "1.0.0"
-      },
-      {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/Turnip_v26.1.0_R4.tzst",
-        "file_md5": "95df6c09b30a5c464d089afb9c04676a",
-        "file_name": "Turnip_v26.1.0_R4.tzst",
-        "file_size": "3050122",
-        "name": "Turnip_v26.1.0_R4",
         "type": 2,
         "version": "1.0.0"
       },
@@ -2308,9 +2254,9 @@
         "version": "1.0.8"
       },
       {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent.tar.zst",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
         "file_md5": "216fccca808125c3c1eaf910cdbc32dd",
-        "file_name": "SteamAgent.tar.zst",
+        "file_name": "SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
         "file_size": "969498",
         "name": "SteamAgent2",
         "type": 5,
@@ -3451,6 +3397,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 383
+    "total": 377
   }
 }

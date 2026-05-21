@@ -9,9 +9,9 @@
     "components": [
       {
         "display_name": "",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent.tar.zst",
+        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
         "file_md5": "216fccca808125c3c1eaf910cdbc32dd",
-        "file_name": "SteamAgent.tar.zst",
+        "file_name": "SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
         "file_size": "969498",
         "id": 431,
         "is_ui": 1,
