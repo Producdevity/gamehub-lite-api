@@ -148,6 +148,15 @@ function basenameFromUrl(url: string): string | null {
   }
 }
 
+function assetNameFromDownloadUrl(downloadUrl: string, source: string): string {
+  const fileName = basenameFromUrl(downloadUrl);
+  if (!fileName) {
+    throw new Error(`${source}: download URL has no file name: ${downloadUrl}`);
+  }
+
+  return toGitHubAssetName(fileName);
+}
+
 function assetLabel(asset: ExpectedReleaseAsset): string {
   return `${asset.kind} ${asset.name}, ID ${asset.id}`;
 }
@@ -167,9 +176,7 @@ export function collectExpectedAssets(registry: ComponentRegistry): ExpectedRele
       kind: 'imagefs',
       id: registry.imagefs.id,
       name: registry.imagefs.name,
-      githubFileName: toGitHubAssetName(
-        basenameFromUrl(registry.imagefs.download_url) ?? registry.imagefs.file_name
-      ),
+      githubFileName: assetNameFromDownloadUrl(registry.imagefs.download_url, 'imagefs'),
       fileMd5: registry.imagefs.file_md5.toLowerCase(),
       fileSize: registry.imagefs.file_size,
     });
@@ -180,9 +187,7 @@ export function collectExpectedAssets(registry: ComponentRegistry): ExpectedRele
       kind: 'container',
       id: container.id,
       name: container.name,
-      githubFileName: toGitHubAssetName(
-        basenameFromUrl(container.download_url) ?? container.file_name
-      ),
+      githubFileName: assetNameFromDownloadUrl(container.download_url, `container ${container.name}`),
       fileMd5: container.file_md5.toLowerCase(),
       fileSize: container.file_size,
     });
@@ -192,8 +197,9 @@ export function collectExpectedAssets(registry: ComponentRegistry): ExpectedRele
         kind: 'container-sub',
         id: container.id,
         name: container.name,
-        githubFileName: toGitHubAssetName(
-          basenameFromUrl(container.sub_data.sub_download_url) ?? container.sub_data.sub_file_name
+        githubFileName: assetNameFromDownloadUrl(
+          container.sub_data.sub_download_url,
+          `container ${container.name} sub_data`
         ),
         fileMd5: container.sub_data.sub_file_md5.toLowerCase(),
         fileSize: null,

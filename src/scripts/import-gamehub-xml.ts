@@ -187,15 +187,26 @@ function gitHubUrl(assetName: string): string {
   return `${DEFAULT_CONFIG.cdnBaseUrl}/${toGitHubFileName(assetName)}`;
 }
 
-function basenameFromUrl(url: string): string {
+function basenameFromUrl(url: string): string | null {
   const withoutFragment = url.split('#')[0] ?? url;
   const withoutQuery = withoutFragment.split('?')[0] ?? withoutFragment;
   const name = basename(withoutQuery);
+  if (!name || name === '.') return null;
+
   try {
     return decodeURIComponent(name);
   } catch {
     return name;
   }
+}
+
+function assetNameFromDownloadUrl(downloadUrl: string, source: string): string {
+  const fileName = basenameFromUrl(downloadUrl);
+  if (!fileName) {
+    throw new Error(`${source}: download URL has no file name: ${downloadUrl}`);
+  }
+
+  return toGitHubFileName(fileName);
 }
 
 function encodedDownloadUrl(url: string): string {
@@ -451,8 +462,9 @@ function toContainer(record: XmlRecord): Container {
   };
 
   if (entry.sub_data) {
-    const subAssetName = toGitHubFileName(
-      basenameFromUrl(entry.sub_data.sub_download_url) || entry.sub_data.sub_file_name
+    const subAssetName = assetNameFromDownloadUrl(
+      entry.sub_data.sub_download_url,
+      `container ${entry.name} sub_data`
     );
     container.sub_data = {
       sub_file_name: entry.sub_data.sub_file_name,
@@ -498,11 +510,15 @@ function collectContainerAssets(
 
     if (!entry.sub_data) continue;
 
-    const subAssetName = toGitHubFileName(
-      basenameFromUrl(entry.sub_data.sub_download_url) || entry.sub_data.sub_file_name
+    const subAssetName = assetNameFromDownloadUrl(
+      entry.sub_data.sub_download_url,
+      `container ${entry.name} sub_data`
     );
     const currentSubAssetName = current?.sub_data
-      ? basenameFromUrl(current.sub_data.sub_download_url)
+      ? assetNameFromDownloadUrl(
+          current.sub_data.sub_download_url,
+          `container ${current.name} sub_data`
+        )
       : '';
     const subChanged =
       !current?.sub_data ||
