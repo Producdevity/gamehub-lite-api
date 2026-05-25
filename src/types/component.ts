@@ -11,7 +11,8 @@ export const ComponentType = {
   STEAM: 7,
 } as const;
 
-export type ComponentTypeValue = (typeof ComponentType)[keyof typeof ComponentType];
+export type ComponentTypeValue =
+  (typeof ComponentType)[keyof typeof ComponentType];
 
 /**
  * Component type metadata
@@ -21,39 +22,39 @@ export const COMPONENT_TYPE_META: Record<
   { name: string; displayName: string; manifest: string }
 > = {
   [ComponentType.BOX64_FEX]: {
-    name: 'box64',
-    displayName: 'Box64 Emulators',
-    manifest: 'box64_manifest',
+    name: "box64",
+    displayName: "Box64 Emulators",
+    manifest: "box64_manifest",
   },
   [ComponentType.GPU_DRIVERS]: {
-    name: 'drivers',
-    displayName: 'GPU Drivers',
-    manifest: 'drivers_manifest',
+    name: "drivers",
+    displayName: "GPU Drivers",
+    manifest: "drivers_manifest",
   },
   [ComponentType.DXVK]: {
-    name: 'dxvk',
-    displayName: 'DXVK Layers',
-    manifest: 'dxvk_manifest',
+    name: "dxvk",
+    displayName: "DXVK Layers",
+    manifest: "dxvk_manifest",
   },
   [ComponentType.VKD3D]: {
-    name: 'vkd3d',
-    displayName: 'VKD3D Proton',
-    manifest: 'vkd3d_manifest',
+    name: "vkd3d",
+    displayName: "VKD3D Proton",
+    manifest: "vkd3d_manifest",
   },
   [ComponentType.GAMES]: {
-    name: 'games',
-    displayName: 'Game Patches',
-    manifest: 'games_manifest',
+    name: "games",
+    displayName: "Game Patches",
+    manifest: "games_manifest",
   },
   [ComponentType.LIBRARIES]: {
-    name: 'libraries',
-    displayName: 'System Libraries',
-    manifest: 'libraries_manifest',
+    name: "libraries",
+    displayName: "System Libraries",
+    manifest: "libraries_manifest",
   },
   [ComponentType.STEAM]: {
-    name: 'steam',
-    displayName: 'Steam Components',
-    manifest: 'steam_manifest',
+    name: "steam",
+    displayName: "Steam Components",
+    manifest: "steam_manifest",
   },
 };
 
@@ -84,6 +85,7 @@ export interface Component {
   blurb?: string; // Description
   gpu_range?: string; // GPU compatibility info
   is_steam?: number; // 0, 1, or 2
+  is_ui?: number; // 0 or 1, UI visibility flag
 }
 
 /**
@@ -104,8 +106,8 @@ export interface Container {
   display_name: string;
 
   // Container-specific
-  framework: 'X64' | 'arm64X' | 'X86';
-  framework_type: 'stable' | 'proton' | 'experimental';
+  framework: "X64" | "arm64X" | "X86";
+  framework_type: "stable" | "proton" | "experimental";
   is_steam: 0 | 1 | 2;
 
   // Optional nested download
