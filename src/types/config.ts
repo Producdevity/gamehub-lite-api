@@ -3,33 +3,36 @@
  */
 export interface BuildConfig {
   // Input sources
-  xmlSource: string;
-  customComponentsFile: string;
+  xmlSource: string
+  customComponentsFile: string
 
   // Static data files
-  containersFile: string;
-  imagefsFile: string;
-  defaultsFile: string;
-  executionConfigFile: string;
+  containersFile: string
+  imagefsFile: string
+  defaultsFile: string
+  executionConfigFile: string
 
   // Output directory
-  outputDir: string;
+  outputDir: string
 
   // GitHub configuration
-  githubRepo: string;
-  githubRelease: string;
+  githubRepo: string
+  githubRelease: string
 
   // URL configuration
-  cdnBaseUrl: string;
-  logoUrl: string;
+  cdnBaseUrl: string
+  logoUrl: string
 
   // Sync options
-  downloadMissing: boolean;
-  downloadDir: string;
+  downloadMissing: boolean
+  downloadDir: string
 
   // Timestamp (null = use current time)
-  timestamp: string | null;
+  timestamp: string | null
 }
+
+// SteamAgent2 is for a more recent version of GameHub (v6?).
+export const UNSUPPORTED_OFFICIAL_COMPONENT_IDS = new Set<number>([431])
 
 /**
  * Default configuration
@@ -51,4 +54,4 @@ export const DEFAULT_CONFIG: BuildConfig = {
   downloadMissing: false,
   downloadDir: './.tmp_components',
   timestamp: null,
-};
+}

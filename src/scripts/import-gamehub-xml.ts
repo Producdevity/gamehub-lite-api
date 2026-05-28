@@ -13,7 +13,12 @@ import {
 } from 'fs';
 import { basename, join } from 'path';
 
-import { DEFAULT_CONFIG, type Container, type Imagefs } from '../types/index.js';
+import {
+  DEFAULT_CONFIG,
+  UNSUPPORTED_OFFICIAL_COMPONENT_IDS,
+  type Container,
+  type Imagefs,
+} from '../types/index.js';
 import { toGitHubAssetKey, toGitHubAssetName } from '../utils/github-assets.js';
 import { formatJson } from '../utils/json.js';
 
@@ -639,11 +644,14 @@ async function main(): Promise<void> {
 
   const officialComponents = parseXmlMap(componentPath);
   const validComponents = officialComponents.filter((record) =>
-    VALID_COMPONENT_TYPES.has(record.wrapper.entry.type)
+    VALID_COMPONENT_TYPES.has(record.wrapper.entry.type) &&
+    !UNSUPPORTED_OFFICIAL_COMPONENT_IDS.has(record.wrapper.entry.id)
   );
   dedupeOfficialAssetNames(validComponents);
   const skippedComponents = officialComponents.filter(
-    (record) => !VALID_COMPONENT_TYPES.has(record.wrapper.entry.type)
+    (record) =>
+      !VALID_COMPONENT_TYPES.has(record.wrapper.entry.type) ||
+      UNSUPPORTED_OFFICIAL_COMPONENT_IDS.has(record.wrapper.entry.id)
   );
 
   const officialImagefs = parseXmlMap(imagefsPath);
@@ -680,7 +688,7 @@ async function main(): Promise<void> {
     const skippedSummary = skippedComponents
       .map((record) => `${record.wrapper.entry.type}:${record.wrapper.entry.name}`)
       .join(', ');
-    console.log(`Skipped non-download setting records: ${skippedComponents.length}`);
+    console.log(`Skipped unsupported/non-component records: ${skippedComponents.length}`);
     console.log(`  ${skippedSummary}`);
   }
   console.log(`Imagefs: ${officialImagefs[0]!.wrapper.entry.version}`);

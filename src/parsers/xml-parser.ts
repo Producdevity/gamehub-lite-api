@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import type { Component, ComponentTypeValue } from '../types/index.js';
+import { UNSUPPORTED_OFFICIAL_COMPONENT_IDS } from '../types/index.js';
 
 /**
  * Raw entry structure from XML JSON
@@ -76,6 +77,9 @@ export function parseXmlContent(content: string): Component[] {
         console.warn(`Skipping component with invalid type: ${entry.name} (type=${entry.type})`);
         continue;
       }
+      if (UNSUPPORTED_OFFICIAL_COMPONENT_IDS.has(entry.id)) {
+        continue;
+      }
 
       const component: Component = {
         id: entry.id,
@@ -107,4 +111,3 @@ export function parseXmlContent(content: string): Component[] {
 
   return components;
 }
-
