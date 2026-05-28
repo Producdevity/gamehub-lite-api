@@ -2833,20 +2833,6 @@
       },
       {
         "display_name": "",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
-        "file_md5": "216fccca808125c3c1eaf910cdbc32dd",
-        "file_name": "SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
-        "file_size": "969498",
-        "id": 431,
-        "is_ui": 1,
-        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
-        "name": "SteamAgent2",
-        "type": 5,
-        "version": "1.0.2",
-        "version_code": 3
-      },
-      {
-        "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/GOOD.tzst",
         "file_md5": "5c4e8b3c447f3015bcadd12e94a5c23f",
         "file_name": "GOOD.tzst",
@@ -5282,7 +5268,7 @@
         "version_code": 1
       }
     ],
-    "total": 377
+    "total": 376
   },
-  "time": "1779725468"
+  "time": "1779968753"
 }
