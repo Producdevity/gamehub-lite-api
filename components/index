@@ -32,7 +32,7 @@
         "type": 4
       },
       {
-        "count": 60,
+        "count": 59,
         "display_name": "Game Patches",
         "manifest_url": "/components/games_manifest",
         "name": "games",
@@ -53,6 +53,6 @@
         "type": 7
       }
     ],
-    "total_components": 377
+    "total_components": 376
   }
 }

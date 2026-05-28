@@ -2254,15 +2254,6 @@
         "version": "1.0.8"
       },
       {
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
-        "file_md5": "216fccca808125c3c1eaf910cdbc32dd",
-        "file_name": "SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
-        "file_size": "969498",
-        "name": "SteamAgent2",
-        "type": 5,
-        "version": "1.0.2"
-      },
-      {
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/TESV_Settings.tzst",
         "file_md5": "bdba9041455ed62ec9013edee142b784",
         "file_name": "TESV_Settings.tzst",
@@ -3397,6 +3388,6 @@
         "version": "1.0.0"
       }
     ],
-    "total": 377
+    "total": 376
   }
 }

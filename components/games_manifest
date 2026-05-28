@@ -5,22 +5,8 @@
     "type": 5,
     "type_name": "games",
     "display_name": "Game Patches",
-    "total": 60,
+    "total": 59,
     "components": [
-      {
-        "display_name": "",
-        "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
-        "file_md5": "216fccca808125c3c1eaf910cdbc32dd",
-        "file_name": "SteamAgent2-216fccca808125c3c1eaf910cdbc32dd.tar.zst",
-        "file_size": "969498",
-        "id": 431,
-        "is_ui": 1,
-        "logo": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/45e60d211d35955bd045aabfded4e64b.png",
-        "name": "SteamAgent2",
-        "type": 5,
-        "version": "1.0.2",
-        "version_code": 3
-      },
       {
         "display_name": "",
         "download_url": "https://github.com/Producdevity/gamehub-lite-api/releases/download/Components/GOOD.tzst",
